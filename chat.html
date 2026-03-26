@@ -223,7 +223,9 @@
       if (isNew) {
         const lbl = document.createElement('div');
         lbl.className   = 'msg-sender';
-        lbl.textContent = msg.mine ? 'You' : (myRole === 'sharer' ? 'Listener' : 'Sharer');
+        lbl.textContent = msg.mine
+          ? 'You'
+          : (window._partnerUsername ? '@' + window._partnerUsername : (myRole === 'sharer' ? 'Listener' : 'Sharer'));
         row.appendChild(lbl);
       }
 
@@ -257,10 +259,16 @@
       status = match.status;
 
       // Set partner info
-      const partnerRole = myRole === 'sharer' ? 'listener' : 'sharer';
+      const partnerRole     = myRole === 'sharer' ? 'listener' : 'sharer';
+      const partnerUsername = match.partner_username || null;
       document.getElementById('partner-pip').textContent  = partnerRole === 'listener' ? '🎧' : '💬';
       document.getElementById('partner-pip').className    = 'partner-pip ' + partnerRole;
-      document.getElementById('partner-name').textContent = partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer';
+      document.getElementById('partner-name').textContent = partnerUsername
+        ? '@' + partnerUsername
+        : (partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer');
+      // Store for use in message labels
+      window._partnerUsername = partnerUsername;
+      window._partnerRole     = partnerRole;
 
       applyStatus();
 

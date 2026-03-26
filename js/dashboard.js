@@ -35,8 +35,9 @@ function sessionRoute(matchId, mode) {
     const data = await res.json();
     if (!data.authenticated) return (window.location.href = '/');
 
-    const name = data.user.email.split('@')[0];
+    const name = data.user.username || data.user.email.split('@')[0];
     document.getElementById('dash-greeting').textContent = buildGreeting(name);
+    renderUsername(data.user.username);
 
     if (data.user.preferred_mode) {
       selectedFormat = data.user.preferred_mode;
@@ -71,6 +72,93 @@ window.fetch = async (...args) => {
   }
   return res;
 };
+
+// ════════════════════════════════════════
+// Username card
+// ════════════════════════════════════════
+let currentUsername = null;
+
+function renderUsername(username) {
+  currentUsername = username || null;
+  const display  = document.getElementById('username-display');
+  const avatar   = document.getElementById('username-avatar');
+
+  if (username) {
+    display.textContent = '@' + username;
+    display.classList.remove('not-set');
+    avatar.textContent = username[0].toUpperCase();
+  } else {
+    display.textContent = 'Not set — others will see "Anonymous"';
+    display.classList.add('not-set');
+    avatar.textContent = '?';
+  }
+}
+
+document.getElementById('btn-edit-username').addEventListener('click', () => {
+  document.getElementById('username-view').style.display = 'none';
+  document.getElementById('username-edit').style.display = 'flex';
+  const input = document.getElementById('username-input');
+  input.value = currentUsername || '';
+  document.getElementById('username-error').textContent = '';
+  input.focus();
+  input.select();
+});
+
+document.getElementById('btn-cancel-username').addEventListener('click', () => {
+  document.getElementById('username-edit').style.display = 'none';
+  document.getElementById('username-view').style.display = 'flex';
+});
+
+document.getElementById('btn-save-username').addEventListener('click', saveUsername);
+document.getElementById('username-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveUsername();
+  if (e.key === 'Escape') document.getElementById('btn-cancel-username').click();
+});
+
+async function saveUsername() {
+  const input    = document.getElementById('username-input');
+  const errorEl  = document.getElementById('username-error');
+  const saveBtn  = document.getElementById('btn-save-username');
+  const val      = input.value.trim();
+
+  errorEl.textContent = '';
+
+  if (val && !/^[a-zA-Z0-9_]{3,30}$/.test(val)) {
+    errorEl.textContent = '3–30 characters: letters, numbers, underscores only.';
+    return;
+  }
+
+  saveBtn.disabled    = true;
+  saveBtn.textContent = 'Saving…';
+
+  try {
+    const res  = await fetch('/api/user/preferences', {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ username: val || null }),
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+      errorEl.textContent = data.message || 'Could not save username.';
+      return;
+    }
+
+    renderUsername(val || null);
+    // Update greeting
+    const newName = val || (await fetch('/api/auth/me').then(r=>r.json()).catch(()=>({user:{email:''}})))
+      .user?.email?.split('@')[0] || '';
+    if (newName) document.getElementById('dash-greeting').textContent = buildGreeting(newName);
+
+    document.getElementById('username-edit').style.display = 'none';
+    document.getElementById('username-view').style.display = 'flex';
+  } catch {
+    errorEl.textContent = 'Network error. Please try again.';
+  } finally {
+    saveBtn.disabled    = false;
+    saveBtn.textContent = 'Save';
+  }
+}
 
 // ════════════════════════════════════════
 // Scroll reveal

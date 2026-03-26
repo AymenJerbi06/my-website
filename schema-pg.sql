@@ -16,8 +16,14 @@ CREATE TABLE IF NOT EXISTS users (
   active_session_token  TEXT
 );
 
--- Add column to existing deployments that pre-date it
+-- Add columns to existing deployments that pre-date them
 ALTER TABLE users ADD COLUMN IF NOT EXISTS active_session_token TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE tablename = 'users' AND indexname = 'users_username_idx') THEN
+    CREATE UNIQUE INDEX users_username_idx ON users (username) WHERE username IS NOT NULL;
+  END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS matches (
   id          BIGSERIAL PRIMARY KEY,

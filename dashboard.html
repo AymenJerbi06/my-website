@@ -31,6 +31,40 @@
       <p>Choose your role for today's session. You can change this any time.</p>
     </div>
 
+    <!-- Username card -->
+    <div class="username-card reveal" style="--delay:0.06s" id="username-card">
+      <!-- View mode -->
+      <div class="username-view" id="username-view">
+        <div class="username-avatar" id="username-avatar">?</div>
+        <div class="username-info">
+          <div class="username-label">Your display name</div>
+          <div class="username-value" id="username-display">Not set</div>
+        </div>
+        <button class="username-edit-trigger" id="btn-edit-username">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Edit
+        </button>
+      </div>
+      <!-- Edit mode -->
+      <div class="username-edit" id="username-edit" style="display:none">
+        <div class="username-input-wrap">
+          <span class="username-at-prefix">@</span>
+          <input type="text" id="username-input" placeholder="your_username"
+                 maxlength="30" autocomplete="off" spellcheck="false" />
+        </div>
+        <p class="username-hint">3–30 characters · letters, numbers, underscores</p>
+        <p class="username-error" id="username-error"></p>
+        <div class="username-actions">
+          <button class="username-cancel-btn" id="btn-cancel-username">Cancel</button>
+          <button class="username-save-btn" id="btn-save-username">Save</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Role selection -->
     <div class="role-select">
       <button class="role-btn sharer-btn reveal" style="--delay:0.05s" data-role="sharer">

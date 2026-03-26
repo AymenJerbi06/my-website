@@ -169,6 +169,151 @@
 .role-btn:hover .role-btn-arrow { opacity: 1; transform: translateX(0); }
 .role-btn-arrow svg { width: 22px; height: 22px; color: #A78BFA; }
 
+/* ── Username card ── */
+.username-card {
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(167,139,250,0.18);
+  border-radius: 20px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 14px rgba(100,60,200,0.06);
+}
+
+.username-view {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.username-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #A78BFA, #7C3AED);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.username-info { flex: 1; }
+.username-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #9A8FC0;
+  margin-bottom: 2px;
+}
+.username-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: #150A35;
+}
+.username-value.not-set { color: #b8aad8; font-weight: 600; font-style: italic; }
+
+.username-edit-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid rgba(167,139,250,0.3);
+  border-radius: 50px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7B6BB5;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.username-edit-trigger svg { width: 13px; height: 13px; }
+.username-edit-trigger:hover { background: rgba(167,139,250,0.1); border-color: #a78bfa; }
+
+.username-edit { display: flex; flex-direction: column; gap: 8px; }
+
+.username-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #F5F2FF;
+  border: 1.5px solid #ddd6fe;
+  border-radius: 12px;
+  padding: 0 14px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.username-input-wrap:focus-within {
+  border-color: #7C3AED;
+  background: #fff;
+}
+.username-at-prefix {
+  font-size: 16px;
+  font-weight: 800;
+  color: #a78bfa;
+  margin-right: 2px;
+  user-select: none;
+}
+.username-input-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #150A35;
+  padding: 11px 0;
+  outline: none;
+}
+.username-input-wrap input::placeholder { color: #c4b5fd; font-weight: 600; }
+
+.username-hint {
+  font-size: 12px;
+  color: #b8aad8;
+  margin: 0;
+  padding: 0 2px;
+}
+.username-error {
+  font-size: 12px;
+  font-weight: 700;
+  color: #dc2626;
+  margin: 0;
+  padding: 0 2px;
+  min-height: 16px;
+}
+
+.username-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 2px; }
+.username-cancel-btn {
+  padding: 8px 18px;
+  border: 1.5px solid #e8e2f5;
+  border-radius: 50px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #9d8fc4;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.username-cancel-btn:hover { border-color: #a78bfa; }
+.username-save-btn {
+  padding: 8px 22px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #7C3AED, #9333ea);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(124,58,237,0.3);
+  transition: opacity 0.15s, transform 0.1s;
+}
+.username-save-btn:hover { opacity: 0.88; transform: scale(1.02); }
+.username-save-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
 /* ── Format preference ── */
 .format-section { text-align: center; }
 

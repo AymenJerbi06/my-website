@@ -256,8 +256,11 @@
       if (!res.ok || match.mode !== 'video') { window.location.href = '/dashboard'; return; }
 
       myRole = match.role;
-      const partnerRole = myRole === 'sharer' ? 'listener' : 'sharer';
-      remoteLabel.textContent = partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer';
+      const partnerRole     = myRole === 'sharer' ? 'listener' : 'sharer';
+      const partnerUsername = match.partner_username || null;
+      remoteLabel.textContent = partnerUsername
+        ? '@' + partnerUsername
+        : (partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer');
 
       // Restore mic/cam states from prejoin lobby
       const prejoin = JSON.parse(sessionStorage.getItem('prejoin') || '{"micOn":true,"camOn":true}');

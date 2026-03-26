@@ -134,7 +134,7 @@ router.get('/me', async (req, res) => {
   }
 
   const user = await queryOne(
-    'SELECT id, email, created_at, preferred_role, preferred_mode FROM users WHERE id = $1',
+    'SELECT id, email, username, created_at, preferred_role, preferred_mode FROM users WHERE id = $1',
     [req.session.userId]
   ).catch(() => null);
 

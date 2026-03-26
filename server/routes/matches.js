@@ -23,16 +23,20 @@ router.get('/', async (req, res) => {
   const match = await loadMatch(req, res);
   if (!match) return;
 
-  const userId = req.session.userId;
-  const role   = match.sharer_id === userId ? 'sharer' : 'listener';
+  const userId    = req.session.userId;
+  const role      = match.sharer_id === userId ? 'sharer' : 'listener';
+  const partnerId = match.sharer_id === userId ? match.listener_id : match.sharer_id;
+
+  const partner = await queryOne('SELECT username FROM users WHERE id = $1', [partnerId]);
 
   return res.json({
-    id:         match.id,
-    mode:       match.mode,
-    status:     match.status,
+    id:               match.id,
+    mode:             match.mode,
+    status:           match.status,
     role,
-    started_at: match.started_at,
-    ended_at:   match.ended_at,
+    started_at:       match.started_at,
+    ended_at:         match.ended_at,
+    partner_username: partner?.username || null,
   });
 });
 

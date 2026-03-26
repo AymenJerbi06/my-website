@@ -117,17 +117,25 @@
 /* ════════════════
    LIVE SESSION
 ════════════════ */
-.video-session-body { background:#000; }
-
-.video-stage {
-  flex:1; position:relative;
-  display:flex; align-items:stretch;
-  overflow:hidden; background:#0d0a1a;
-  min-height:0;
+.video-session-body {
+  background: #000;
+  height: 100vh;       /* lock to viewport — no page scrolling during a call */
+  overflow: hidden;
 }
 
-/* Remote video fills stage */
-#remote-video { width:100%; height:100%; object-fit:cover; }
+.video-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;      /* centre portrait streams instead of stretching them */
+  justify-content: center;
+  overflow: hidden;
+  background: #0d0a1a;
+  min-height: 0;            /* prevents flex child from expanding beyond parent */
+}
+
+/* Remote video — contain keeps the whole person visible without scrolling */
+#remote-video { width: 100%; height: 100%; object-fit: contain; }
 
 /* Connecting / waiting overlay */
 .connecting-overlay {

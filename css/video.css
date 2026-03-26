@@ -264,34 +264,55 @@
   .end-call-btn                 { width: 50px !important; height: 50px !important; }
 }
 
-/* ══════════════════════════════════════
-   PHONE LANDSCAPE  (≤ 950 px, sideways)
-   Every pixel of height is precious.
-   Icon-only controls, minimal header.
-══════════════════════════════════════ */
-@media (max-width: 950px) and (orientation: landscape) {
+/* ══════════════════════════════════════════════════
+   COMPACT LANDSCAPE — phone in landscape orientation
+   Trigger: short height (< 500px), not just width.
+   Controls are FIXED to bottom so they can never be
+   pushed off screen regardless of grid/flex behaviour.
+══════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
   /* Minimal header */
-  .video-session-body .dash-header { padding: 4px 10px; min-height: 40px; }
-  .video-session-body .nav-logo    { height: 22px; }
+  .video-session-body .dash-header { padding: 3px 10px; min-height: 38px; }
+  .video-session-body .nav-logo    { height: 20px; }
   #session-badge   { font-size: 11px !important; padding: 3px 10px !important; }
   #btn-report-hdr  { display: none !important; }
 
-  /* Remote label chip */
-  .remote-label { top: 8px; left: 8px; font-size: 11px; padding: 3px 9px; }
+  /* Remote label chip stays inside the video stage */
+  .remote-label { top: 6px; left: 8px; font-size: 11px; padding: 3px 9px; }
 
-  /* Self-view tile */
+  /* Self-view: small landscape tile just below the header */
   .local-pip {
-    width: 96px; aspect-ratio: 4/3;
-    top: 46px; right: 8px; bottom: auto;
+    width: 90px; aspect-ratio: 4/3;
+    top: 44px; right: 8px; bottom: auto;
     border-radius: 8px;
   }
 
-  /* Icon-only controls: hide text labels via font-size:0 on wrapper,
-     restore size on the button inside so icons are unaffected */
-  .ctrl-label         { gap: 0; font-size: 0; }
-  .ctrl-label .ctrl-btn { font-size: 14px; }
-  .ctrl-label .ctrl-btn         { width: 42px; height: 42px; }
-  .ctrl-btn svg                 { width: 17px; height: 17px; }
-  .end-call-btn                 { width: 46px !important; height: 46px !important; }
-  .video-controls               { padding: 5px 0 calc(7px + env(safe-area-inset-bottom)); gap: 8px; }
+  /* Video stage must NOT be covered by the fixed dock */
+  .video-stage { padding-bottom: 58px; }
+
+  /* Controls dock: FIXED to bottom — immune to layout flow */
+  .video-controls {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40;
+    height: 54px;
+    padding: 4px 10px calc(4px + env(safe-area-inset-bottom));
+    gap: 10px;
+    background: rgba(13,10,26,0.97);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Icon-only: hide label text, keep buttons */
+  .ctrl-label             { display: none; }
+  /* Pull buttons out of hidden labels so they're direct children of the dock */
+}
+
+/* Buttons inside hidden labels need to be visible — restructure display */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Re-show the buttons even though their parent .ctrl-label is hidden */
+  .ctrl-label             { display: flex; flex-direction: column; align-items: center; gap: 0; font-size: 0; }
+  .ctrl-label .ctrl-btn   { width: 42px; height: 42px; }
+  .ctrl-btn svg           { width: 17px; height: 17px; }
+  .end-call-btn           { width: 44px !important; height: 44px !important; }
 }

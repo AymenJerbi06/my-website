@@ -238,6 +238,7 @@
 
       if (res.bothReady) {
         // Partner is also ready — go straight in
+        sessionStorage.setItem('navigatingToSession', '1');
         window.location.href = `/video/${matchId}`;
       } else {
         // Wait for partner
@@ -259,6 +260,7 @@
           const data = await fetch(`/api/matches/${matchId}/ready-status`).then(r => r.json());
           if (data.bothReady) {
             clearInterval(readyPollTimer);
+            sessionStorage.setItem('navigatingToSession', '1');
             window.location.href = `/video/${matchId}`;
           }
           // Show contextual message
@@ -324,8 +326,11 @@
 
     window.addEventListener('pagehide', () => {
       localStream?.getTracks().forEach(t => t.stop());
-      fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE', keepalive: true }).catch(() => {});
-      fetch(`/api/matches/${matchId}/leave`,  { method: 'POST',   keepalive: true }).catch(() => {});
+      // Don't leave if we're navigating forward into the video session
+      if (!sessionStorage.getItem('navigatingToSession')) {
+        fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE', keepalive: true }).catch(() => {});
+        fetch(`/api/matches/${matchId}/leave`,  { method: 'POST',   keepalive: true }).catch(() => {});
+      }
     });
   </script>
 </body>

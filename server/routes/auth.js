@@ -2,7 +2,7 @@ const express  = require('express');
 const router   = express.Router();
 const bcrypt   = require('bcrypt');
 const { body, validationResult } = require('express-validator');
-const { queryOne, run } = require('../db');
+const { queryOne, run, query } = require('../db');
 
 const SALT_ROUNDS = 12;
 
@@ -85,7 +85,17 @@ router.post('/login', [
 
     req.session.userId = user.id;
     req.session.email  = email;
-    return res.json({ success: true, redirect: '/dashboard' });
+
+    // If already in an active session, send straight there instead of dashboard
+    const activeMatch = await queryOne(
+      "SELECT id, mode FROM matches WHERE (sharer_id=$1 OR listener_id=$1) AND status='active'",
+      [user.id]
+    );
+    const redirect = activeMatch
+      ? (activeMatch.mode === 'video' ? `/video/${activeMatch.id}/prejoin` : `/chat/${activeMatch.id}`)
+      : '/dashboard';
+
+    return res.json({ success: true, redirect });
 
   } catch (err) {
     console.error('Login error:', err);

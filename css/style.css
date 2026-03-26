@@ -133,6 +133,29 @@ nav {
 .large { padding: 17px 48px; font-size: 17px; }
 .full  { width: 100%; text-align: center; margin-top: 8px; padding: 14px; }
 
+/* ── Password field with show/hide toggle ── */
+.password-field {
+  position: relative;
+  width: 100%;
+}
+.password-field input {
+  width: 100%;
+  padding-right: 48px;
+}
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 17px;
+  color: #8b7ec8;
+  padding: 0;
+  line-height: 1;
+}
+
 /* ════════════════════
    HERO
 ════════════════════ */

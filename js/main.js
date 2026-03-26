@@ -1,3 +1,14 @@
+// ── Password show/hide toggle ──
+document.querySelectorAll('.toggle-password').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const input   = btn.previousElementSibling;
+    const showing = input.type === 'text';
+    input.type    = showing ? 'password' : 'text';
+    btn.textContent = showing ? '👁' : '🙈';
+    btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+  });
+});
+
 // ── Init Lucide icons ──
 lucide.createIcons();
 

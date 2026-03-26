@@ -274,7 +274,10 @@
       <form id="form-login">
         <div class="form-error hidden" id="error-login"></div>
         <input type="email"    id="login-email"    name="email"    placeholder="Email address"  autocomplete="email" required />
-        <input type="password" id="login-password" name="password" placeholder="Password"       autocomplete="current-password" required />
+        <div class="password-field">
+          <input type="password" id="login-password" name="password" placeholder="Password" autocomplete="current-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
+        </div>
         <button class="btn-primary full" type="submit" id="btn-login-submit">Log In</button>
       </form>
       <p class="modal-switch">Don't have an account? <a href="#" onclick="switchModal('login','signup')">Sign up</a></p>
@@ -291,8 +294,14 @@
       <form id="form-signup">
         <div class="form-error hidden" id="error-signup"></div>
         <input type="email"    id="signup-email"    name="email"            placeholder="Email address"    autocomplete="email" required />
-        <input type="password" id="signup-password" name="password"         placeholder="Password — 8+ chars, 1 uppercase, 1 number" autocomplete="new-password" required />
-        <input type="password" id="signup-confirm"  name="confirmPassword"  placeholder="Confirm password" autocomplete="new-password" required />
+        <div class="password-field">
+          <input type="password" id="signup-password" name="password" placeholder="Password — 8+ chars, 1 uppercase, 1 number" autocomplete="new-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
+        </div>
+        <div class="password-field">
+          <input type="password" id="signup-confirm"  name="confirmPassword"  placeholder="Confirm password" autocomplete="new-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
+        </div>
         <button class="btn-primary full" type="submit" id="btn-signup-submit">Create Account</button>
       </form>
       <p class="modal-trust"><i data-lucide="lock" class="trust-icon-sm"></i> No credit card · Always anonymous</p>

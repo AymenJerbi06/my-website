@@ -36,6 +36,22 @@
     <div class="connecting-overlay" id="state-connecting">
       <div class="video-waiting-spinner"></div>
       <p id="connecting-text">Connecting to your partner…</p>
+      <!-- Connection failed card (shown after timeout) -->
+      <div id="connect-failed-card" style="display:none;margin-top:16px;background:rgba(239,68,68,0.1);
+           border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;padding:16px 20px;max-width:300px;text-align:center;">
+        <p style="font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:12px;">
+          Couldn't establish the video connection.<br>
+          <span style="color:rgba(255,255,255,0.5);font-size:12px;">This can happen on mobile networks or behind firewalls.</span>
+        </p>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+          <button id="btn-retry-connect" style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);
+            border-radius:50px;padding:8px 18px;font-size:13px;font-weight:700;color:#fff;
+            font-family:'Nunito',sans-serif;cursor:pointer;">Retry</button>
+          <button id="btn-switch-text" style="background:rgba(124,58,237,0.3);border:1.5px solid rgba(167,139,250,0.4);
+            border-radius:50px;padding:8px 18px;font-size:13px;font-weight:700;color:#a78bfa;
+            font-family:'Nunito',sans-serif;cursor:pointer;">Switch to Text</button>
+        </div>
+      </div>
       <!-- "Leave" exit button for connecting state -->
       <button id="btn-leave-connecting" style="
         margin-top:8px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);
@@ -151,6 +167,9 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    // ── Debug logger ──────────────────────────────────────────
+    function dbg(...args) { console.log('[WebRTC]', ...args); }
+
     // ── Config ────────────────────────────────────────────────
     const ICE_CONFIG = {
       iceServers: [
@@ -176,6 +195,7 @@
 
     // Phase: 'connecting' | 'active' | 'ended'
     let phase = 'connecting';
+    let connectTimeoutTimer = null;
 
     // ── DOM ───────────────────────────────────────────────────
     const localVideo        = document.getElementById('local-video');
@@ -232,9 +252,14 @@
       // Acquire local media — graceful fallback
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        dbg('Got local stream (video+audio)');
       } catch {
-        try { localStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
-        catch { /* media unavailable — connect audio-less */ }
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          dbg('Got local stream (audio-only)');
+        } catch (e) {
+          dbg('Media unavailable:', e.message);
+        }
       }
 
       if (localStream) {
@@ -246,48 +271,91 @@
         localPip.style.display = 'block';
       }
 
+      dbg('Joining room matchId:', matchId);
       socket.emit('join-room', { matchId });
     })();
 
+    // ── Connection timeout ─────────────────────────────────────
+    function startConnectTimeout() {
+      clearTimeout(connectTimeoutTimer);
+      connectTimeoutTimer = setTimeout(() => {
+        if (phase !== 'active') {
+          dbg('Connection timeout — showing failure card');
+          document.getElementById('connect-failed-card').style.display = 'block';
+        }
+      }, 15000);
+    }
+    function clearConnectTimeout() {
+      clearTimeout(connectTimeoutTimer);
+      document.getElementById('connect-failed-card').style.display = 'none';
+    }
+
+    document.getElementById('btn-retry-connect').addEventListener('click', () => {
+      dbg('Retry — rejoining room');
+      document.getElementById('connect-failed-card').style.display = 'none';
+      pc?.close(); pc = null; offerSent = false; remoteDescSet = false; iceCandidateBuffer = [];
+      socket.emit('join-room', { matchId });
+      startConnectTimeout();
+    });
+    document.getElementById('btn-switch-text').addEventListener('click', async () => {
+      dbg('Switching to text session');
+      await fetch(`/api/matches/${matchId}/switch-mode`, { method: 'POST' }).catch(() => {});
+      endSession(false);
+      window.location.href = `/chat/${matchId}`;
+    });
+
     // ── Signaling ─────────────────────────────────────────────
     socket.on('waiting-for-peer', () => {
+      dbg('waiting-for-peer');
       connectingText.textContent = 'Waiting for your partner to join…';
       setPhase('connecting');
     });
 
     socket.on('peer-ready', async ({ initiator }) => {
+      dbg('peer-ready — initiator:', initiator);
       createPC();
+      startConnectTimeout();
       if (initiator && !offerSent) {
         offerSent = true;
+        dbg('Creating offer…');
         const offer = await pc.createOffer();
         await pc.setLocalDescription(offer);
+        dbg('Offer created, sending');
         socket.emit('offer', { matchId, sdp: offer.sdp });
       }
     });
 
     socket.on('offer', async ({ sdp }) => {
+      dbg('Received offer');
       if (!pc) createPC();
+      startConnectTimeout();
       await pc.setRemoteDescription(new RTCSessionDescription({ type: 'offer', sdp }));
       remoteDescSet = true;
+      dbg('Remote description set (offer), flushing ICE buffer:', iceCandidateBuffer.length);
       await flushIce();
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
+      dbg('Answer created, sending');
       socket.emit('answer', { matchId, sdp: answer.sdp });
     });
 
     socket.on('answer', async ({ sdp }) => {
+      dbg('Received answer');
       await pc.setRemoteDescription(new RTCSessionDescription({ type: 'answer', sdp }));
       remoteDescSet = true;
+      dbg('Remote description set (answer), flushing ICE buffer:', iceCandidateBuffer.length);
       await flushIce();
     });
 
     socket.on('ice-candidate', async ({ candidate }) => {
       if (!candidate) return;
+      dbg('Received ICE candidate, remoteDescSet:', remoteDescSet);
       const ice = new RTCIceCandidate(candidate);
-      remoteDescSet && pc ? pc.addIceCandidate(ice).catch(() => {}) : iceCandidateBuffer.push(ice);
+      remoteDescSet && pc ? pc.addIceCandidate(ice).catch(e => dbg('addIceCandidate error:', e)) : iceCandidateBuffer.push(ice);
     });
 
     socket.on('peer-disconnected', () => {
+      dbg('peer-disconnected');
       connectingText.textContent = 'Your partner lost connection — waiting to reconnect…';
       document.getElementById('btn-leave-connecting').textContent = 'Leave session';
       setPhase('connecting');
@@ -304,23 +372,52 @@
     // ── RTCPeerConnection ──────────────────────────────────────
     function createPC() {
       if (pc) return;
+      dbg('Creating RTCPeerConnection with ICE config:', ICE_CONFIG.iceServers.map(s => s.urls));
       pc = new RTCPeerConnection(ICE_CONFIG);
-      if (localStream) localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+      if (localStream) {
+        localStream.getTracks().forEach(t => { pc.addTrack(t, localStream); dbg('Added local track:', t.kind); });
+      }
 
       pc.ontrack = (e) => {
+        dbg('ontrack fired — remote stream received, tracks:', e.streams[0]?.getTracks().map(t=>t.kind));
         remoteVideo.srcObject = e.streams[0];
+        clearConnectTimeout();
         setPhase('active');
       };
 
       pc.onicecandidate = (e) => {
-        if (e.candidate) socket.emit('ice-candidate', { matchId, candidate: e.candidate.toJSON() });
+        if (e.candidate) {
+          dbg('Sending ICE candidate:', e.candidate.type, e.candidate.protocol);
+          socket.emit('ice-candidate', { matchId, candidate: e.candidate.toJSON() });
+        } else {
+          dbg('ICE gathering complete');
+        }
+      };
+
+      pc.oniceconnectionstatechange = () => {
+        dbg('iceConnectionState:', pc.iceConnectionState);
+        if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+          clearConnectTimeout();
+        }
+      };
+
+      pc.onsignalingstatechange = () => {
+        dbg('signalingState:', pc.signalingState);
       };
 
       pc.onconnectionstatechange = () => {
+        dbg('connectionState:', pc.connectionState);
         if (pc.connectionState === 'connected') {
+          clearConnectTimeout();
           setPhase('active');
-        } else if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+        } else if (pc.connectionState === 'disconnected') {
           connectingText.textContent = 'Connection lost — attempting to reconnect…';
+          setPhase('connecting');
+          startConnectTimeout();
+        } else if (pc.connectionState === 'failed') {
+          dbg('Connection failed — showing failure card');
+          connectingText.textContent = 'Connection failed.';
+          document.getElementById('connect-failed-card').style.display = 'block';
           setPhase('connecting');
         }
       };

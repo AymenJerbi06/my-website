@@ -11,6 +11,9 @@
   font-family: 'Nunito', sans-serif;
 }
 
+/* Prejoin pages still scroll normally if content is tall */
+.prejoin-body { overflow-y: auto; }
+
 /* ════════════════
    PRE-JOIN LOBBY
 ════════════════ */
@@ -117,28 +120,35 @@
 /* ════════════════
    LIVE SESSION
 ════════════════ */
+
+/*
+ * 3-row grid: header | video-stage | controls
+ * This guarantees the controls are always visible regardless of stream
+ * aspect ratio or viewport height (fixes landscape on iPhone).
+ */
 .video-session-body {
   background: #000;
-  /* 100dvh accounts for Safari's collapsing browser bars; 100vh is the fallback */
+  /* 100dvh tracks Safari's collapsing bars; 100vh is the fallback */
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   /* iPhone notch / home-bar safe areas */
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Compact header inside a live call */
+/* Compact header — row 1 */
 .video-session-body .dash-header {
   padding: 8px 16px;
   min-height: 56px;
-  flex-shrink: 0;
 }
 .video-session-body .nav-logo { height: 36px; }
 
+/* Video stage — row 2: 1fr with min-height:0 so it never pushes row 3 off screen */
 .video-stage {
-  flex: 1;
-  min-height: 0;               /* stops flex child expanding past parent */
+  min-height: 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -211,11 +221,10 @@
   font-weight:800; font-size:14px;
 }
 
-/* ── Bottom controls dock ─────────────────────────────────── */
+/* ── Bottom controls dock — row 3 (always visible) ───────── */
 .video-controls {
-  flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; gap: 12px;
-  padding: 10px 0 14px;
+  padding: 10px 0 calc(14px + env(safe-area-inset-bottom));
   background: rgba(13,10,26,0.96);
   border-top: 1px solid rgba(255,255,255,0.06);
   position: relative; z-index: 25;
@@ -257,43 +266,32 @@
 
 /* ══════════════════════════════════════
    PHONE LANDSCAPE  (≤ 950 px, sideways)
-   Every pixel of height is precious —
-   treat this as a compact call surface.
+   Every pixel of height is precious.
+   Icon-only controls, minimal header.
 ══════════════════════════════════════ */
 @media (max-width: 950px) and (orientation: landscape) {
-  /* Header: as small as possible */
-  .video-session-body .dash-header {
-    padding: 4px 10px;
-    min-height: 40px;
-  }
-  .video-session-body .nav-logo { height: 22px; }
+  /* Minimal header */
+  .video-session-body .dash-header { padding: 4px 10px; min-height: 40px; }
+  .video-session-body .nav-logo    { height: 22px; }
+  #session-badge   { font-size: 11px !important; padding: 3px 10px !important; }
+  #btn-report-hdr  { display: none !important; }
 
-  /* Shrink the "Video Session" badge text and padding */
-  #session-badge {
-    font-size: 11px !important;
-    padding: 3px 10px !important;
-  }
-
-  /* Hide report button entirely — no room */
-  #btn-report-hdr { display: none !important; }
-
-  /* Remote label chip stays inside the video stage (already absolute) */
+  /* Remote label chip */
   .remote-label { top: 8px; left: 8px; font-size: 11px; padding: 3px 9px; }
 
-  /* Self-view: landscape tile, tucked under the minimal header */
+  /* Self-view tile */
   .local-pip {
-    width: 100px; aspect-ratio: 4/3;
+    width: 96px; aspect-ratio: 4/3;
     top: 46px; right: 8px; bottom: auto;
     border-radius: 8px;
   }
 
-  /* Controls: minimal height dock */
-  .video-controls {
-    padding: 4px 0 6px;
-    gap: 6px;
-  }
-  .ctrl-label           { font-size: 9px; gap: 2px; }
-  .ctrl-label .ctrl-btn { width: 40px; height: 40px; }
-  .ctrl-btn svg         { width: 17px; height: 17px; }
-  .end-call-btn         { width: 44px !important; height: 44px !important; }
+  /* Icon-only controls: hide text labels via font-size:0 on wrapper,
+     restore size on the button inside so icons are unaffected */
+  .ctrl-label         { gap: 0; font-size: 0; }
+  .ctrl-label .ctrl-btn { font-size: 14px; }
+  .ctrl-label .ctrl-btn         { width: 42px; height: 42px; }
+  .ctrl-btn svg                 { width: 17px; height: 17px; }
+  .end-call-btn                 { width: 46px !important; height: 46px !important; }
+  .video-controls               { padding: 5px 0 calc(7px + env(safe-area-inset-bottom)); gap: 8px; }
 }

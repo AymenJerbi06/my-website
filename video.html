@@ -154,6 +154,9 @@
   </div>
 
   <style>
+    /* Lock html/body so the grid shell is truly viewport-height */
+    html, body { height: 100%; overflow: hidden; }
+
     .rrd {
       display:flex;align-items:center;gap:10px;padding:10px 14px;
       border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;

@@ -119,22 +119,35 @@
 ════════════════ */
 .video-session-body {
   background: #000;
-  height: 100vh;       /* lock to viewport — no page scrolling during a call */
+  /* 100dvh accounts for Safari's collapsing browser bars; 100vh is the fallback */
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
+  /* iPhone notch / home-bar safe areas */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* Compact header inside a live call */
+.video-session-body .dash-header {
+  padding: 8px 16px;
+  min-height: 56px;
+  flex-shrink: 0;
+}
+.video-session-body .nav-logo { height: 36px; }
 
 .video-stage {
   flex: 1;
+  min-height: 0;               /* stops flex child expanding past parent */
   position: relative;
   display: flex;
-  align-items: center;      /* centre portrait streams instead of stretching them */
+  align-items: center;
   justify-content: center;
   overflow: hidden;
   background: #0d0a1a;
-  min-height: 0;            /* prevents flex child from expanding beyond parent */
 }
 
-/* Remote video — contain keeps the whole person visible without scrolling */
+/* Remote video — contain keeps the full person visible on any aspect ratio */
 #remote-video { width: 100%; height: 100%; object-fit: contain; }
 
 /* Connecting / waiting overlay */
@@ -147,36 +160,28 @@
 .connecting-overlay.hidden { display:none; }
 .connecting-overlay p { font-size:15px; color:rgba(255,255,255,0.55); font-weight:600; }
 
-/* Remote label */
+/* Remote label chip */
 .remote-label {
-  position:absolute; top:16px; left:16px; z-index:15;
+  position:absolute; top:12px; left:12px; z-index:15;
   background:rgba(0,0,0,0.45); backdrop-filter:blur(10px);
-  border-radius:8px; padding:5px 13px;
+  border-radius:8px; padding:4px 11px;
   font-size:12px; font-weight:700; color:rgba(255,255,255,0.8);
 }
 
-/* Local PiP — desktop default */
+/* ── Local PiP ─────────────────────────────────────────────
+   Desktop default: bottom-right floating tile               */
 .local-pip {
-  position:absolute; bottom:90px; right:16px; z-index:15;
-  width:150px; aspect-ratio:4/3;
-  border-radius:12px; overflow:hidden;
-  border:2px solid rgba(255,255,255,0.18);
-  box-shadow:0 4px 20px rgba(0,0,0,0.55);
-  background:#111;
+  position: absolute;
+  bottom: 82px; right: 16px;
+  z-index: 15;
+  width: 150px; aspect-ratio: 4/3;
+  border-radius: 12px; overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.18);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+  background: #111;
 }
 .local-pip video { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
 
-/* Local PiP — mobile portrait: smaller, top-right so it doesn't block the remote person */
-@media (max-width: 768px) and (orientation: portrait) {
-  .local-pip {
-    width: 88px;
-    aspect-ratio: 3/4;
-    top: 72px;
-    right: 10px;
-    bottom: auto;
-    border-radius: 10px;
-  }
-}
 .pip-cam-off {
   position:absolute; inset:0; background:#1a1128;
   display:flex; align-items:center; justify-content:center; font-size:28px;
@@ -206,14 +211,14 @@
   font-weight:800; font-size:14px;
 }
 
-/* Controls pill */
+/* ── Bottom controls dock ─────────────────────────────────── */
 .video-controls {
-  flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  padding:12px 0 16px;
-  background:rgba(13,10,26,0.96);
-  border-top:1px solid rgba(255,255,255,0.06);
-  position:relative; z-index:25;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 10px 0 14px;
+  background: rgba(13,10,26,0.96);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative; z-index: 25;
 }
 
 .ctrl-label {
@@ -229,3 +234,48 @@
   width:56px !important; height:56px !important;
 }
 .end-call-btn:hover { background:#b91c1c !important; }
+
+/* ══════════════════════════════════════
+   PHONE PORTRAIT  (≤ 768 px, upright)
+══════════════════════════════════════ */
+@media (max-width: 768px) and (orientation: portrait) {
+  .video-session-body .dash-header { padding: 6px 12px; min-height: 52px; }
+  .video-session-body .nav-logo    { height: 28px; }
+
+  /* Small portrait tile tucked under the header, top-right */
+  .local-pip {
+    width: 88px; aspect-ratio: 3/4;
+    top: 58px; right: 10px; bottom: auto;
+    border-radius: 10px;
+  }
+
+  /* Tighter control dock */
+  .video-controls               { padding: 8px 0 12px; gap: 10px; }
+  .ctrl-label .ctrl-btn         { width: 46px; height: 46px; }
+  .end-call-btn                 { width: 50px !important; height: 50px !important; }
+}
+
+/* ══════════════════════════════════════
+   PHONE LANDSCAPE  (≤ 950 px, sideways)
+   Every pixel of height is precious.
+══════════════════════════════════════ */
+@media (max-width: 950px) and (orientation: landscape) {
+  .video-session-body .dash-header { padding: 4px 10px; min-height: 44px; }
+  .video-session-body .nav-logo    { height: 24px; }
+
+  /* Hide low-priority header chrome to save vertical space */
+  #btn-report-hdr { display: none !important; }
+
+  /* Landscape-shaped tile, top-right */
+  .local-pip {
+    width: 110px; aspect-ratio: 4/3;
+    top: 50px; right: 10px; bottom: auto;
+    border-radius: 10px;
+  }
+
+  /* Minimal control dock */
+  .video-controls               { padding: 5px 0 7px; gap: 8px; }
+  .ctrl-label .ctrl-btn         { width: 42px; height: 42px; }
+  .end-call-btn                 { width: 46px !important; height: 46px !important; }
+  .ctrl-label                   { font-size: 9px; gap: 3px; }
+}

@@ -46,6 +46,19 @@ function sessionRoute(matchId, mode) {
   }
 })();
 
+// Intercept any 401 with kicked:true and redirect to login with notice
+const _origFetch = window.fetch;
+window.fetch = async (...args) => {
+  const res = await _origFetch(...args);
+  if (res.status === 401) {
+    const clone = res.clone();
+    clone.json().then(d => {
+      if (d.kicked) window.location.href = '/?kicked=1';
+    }).catch(() => {});
+  }
+  return res;
+};
+
 // ════════════════════════════════════════
 // Scroll reveal
 // ════════════════════════════════════════

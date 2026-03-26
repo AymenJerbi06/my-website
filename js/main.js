@@ -1,3 +1,15 @@
+// ── Kicked-from-other-device notice ──
+if (new URLSearchParams(window.location.search).get('kicked') === '1') {
+  setTimeout(() => {
+    openModal('login');
+    const err = document.getElementById('error-login');
+    if (err) {
+      err.textContent = 'You were signed out because your account was used on another device.';
+      err.classList.remove('hidden');
+    }
+  }, 100);
+}
+
 // ── Password show/hide toggle ──
 document.querySelectorAll('.toggle-password').forEach((btn) => {
   btn.addEventListener('click', () => {

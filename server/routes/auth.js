@@ -1,8 +1,13 @@
 const express  = require('express');
 const router   = express.Router();
 const bcrypt   = require('bcrypt');
+const crypto   = require('crypto');
 const { body, validationResult } = require('express-validator');
 const { queryOne, run, query } = require('../db');
+
+function makeSessionToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
 
 const SALT_ROUNDS = 12;
 
@@ -43,8 +48,12 @@ router.post('/signup', [
       [email, password_hash]
     );
 
-    req.session.userId = user.id;
-    req.session.email  = email;
+    const token = makeSessionToken();
+    await run('UPDATE users SET active_session_token = $1 WHERE id = $2', [token, user.id]);
+
+    req.session.userId       = user.id;
+    req.session.email        = email;
+    req.session.sessionToken = token;
     return res.status(201).json({ success: true, redirect: '/dashboard' });
 
   } catch (err) {
@@ -81,10 +90,12 @@ router.post('/login', [
       return res.status(401).json({ success: false, message: 'Incorrect email or password.' });
     }
 
-    await run('UPDATE users SET last_seen_at = NOW() WHERE id = $1', [user.id]);
+    const token = makeSessionToken();
+    await run('UPDATE users SET active_session_token = $1, last_seen_at = NOW() WHERE id = $2', [token, user.id]);
 
-    req.session.userId = user.id;
-    req.session.email  = email;
+    req.session.userId       = user.id;
+    req.session.email        = email;
+    req.session.sessionToken = token;
 
     // If already in an active session, send straight there instead of dashboard
     const activeMatch = await queryOne(
@@ -104,7 +115,11 @@ router.post('/login', [
 });
 
 // ── POST /api/auth/logout ──────────────────────────────────
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
+  const userId = req.session?.userId;
+  if (userId) {
+    await run('UPDATE users SET active_session_token = NULL WHERE id = $1', [userId]).catch(() => {});
+  }
   req.session.destroy((err) => {
     if (err) return res.status(500).json({ success: false });
     res.clearCookie('connect.sid');

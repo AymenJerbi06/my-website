@@ -257,25 +257,43 @@
 
 /* ══════════════════════════════════════
    PHONE LANDSCAPE  (≤ 950 px, sideways)
-   Every pixel of height is precious.
+   Every pixel of height is precious —
+   treat this as a compact call surface.
 ══════════════════════════════════════ */
 @media (max-width: 950px) and (orientation: landscape) {
-  .video-session-body .dash-header { padding: 4px 10px; min-height: 44px; }
-  .video-session-body .nav-logo    { height: 24px; }
+  /* Header: as small as possible */
+  .video-session-body .dash-header {
+    padding: 4px 10px;
+    min-height: 40px;
+  }
+  .video-session-body .nav-logo { height: 22px; }
 
-  /* Hide low-priority header chrome to save vertical space */
-  #btn-report-hdr { display: none !important; }
-
-  /* Landscape-shaped tile, top-right */
-  .local-pip {
-    width: 110px; aspect-ratio: 4/3;
-    top: 50px; right: 10px; bottom: auto;
-    border-radius: 10px;
+  /* Shrink the "Video Session" badge text and padding */
+  #session-badge {
+    font-size: 11px !important;
+    padding: 3px 10px !important;
   }
 
-  /* Minimal control dock */
-  .video-controls               { padding: 5px 0 7px; gap: 8px; }
-  .ctrl-label .ctrl-btn         { width: 42px; height: 42px; }
-  .end-call-btn                 { width: 46px !important; height: 46px !important; }
-  .ctrl-label                   { font-size: 9px; gap: 3px; }
+  /* Hide report button entirely — no room */
+  #btn-report-hdr { display: none !important; }
+
+  /* Remote label chip stays inside the video stage (already absolute) */
+  .remote-label { top: 8px; left: 8px; font-size: 11px; padding: 3px 9px; }
+
+  /* Self-view: landscape tile, tucked under the minimal header */
+  .local-pip {
+    width: 100px; aspect-ratio: 4/3;
+    top: 46px; right: 8px; bottom: auto;
+    border-radius: 8px;
+  }
+
+  /* Controls: minimal height dock */
+  .video-controls {
+    padding: 4px 0 6px;
+    gap: 6px;
+  }
+  .ctrl-label           { font-size: 9px; gap: 2px; }
+  .ctrl-label .ctrl-btn { width: 40px; height: 40px; }
+  .ctrl-btn svg         { width: 17px; height: 17px; }
+  .end-call-btn         { width: 44px !important; height: 44px !important; }
 }

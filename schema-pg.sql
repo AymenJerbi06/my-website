@@ -12,8 +12,12 @@ CREATE TABLE IF NOT EXISTS users (
   preferred_role TEXT      CHECK (preferred_role IN ('sharer','listener')),
   preferred_mode TEXT      NOT NULL DEFAULT 'either'
                             CHECK (preferred_mode IN ('text','video','either')),
-  last_seen_at   TIMESTAMPTZ
+  last_seen_at          TIMESTAMPTZ,
+  active_session_token  TEXT
 );
+
+-- Add column to existing deployments that pre-date it
+ALTER TABLE users ADD COLUMN IF NOT EXISTS active_session_token TEXT;
 
 CREATE TABLE IF NOT EXISTS matches (
   id          BIGSERIAL PRIMARY KEY,

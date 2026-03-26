@@ -49,6 +49,14 @@
         <div class="chat-empty-sub">Everything shared here is anonymous and private.<br>Say hello to begin.</div>
       </div>
 
+    <!-- Typing indicator (appended at bottom of inner, shown when partner types) -->
+    <div class="typing-indicator" id="typing-indicator" style="display:none">
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="typing-label" id="typing-label">typing…</span>
+    </div>
+
     </div>
 
     <!-- Scroll-to-bottom FAB -->
@@ -131,7 +139,9 @@
     let   status    = null;   // 'active' | 'ended'
     let   lastMsgId = 0;
     let   lastSender = null;  // 'mine' | 'theirs' — for grouping
-    let   pollTimer = null;
+    let   pollTimer        = null;
+    let   typingPollTimer  = null;
+    let   typingSendTimer  = null;   // throttle outgoing typing pings
     let   iEndedSession = false; // true when this user clicked End Session
     let   suppressAnimation = false;
 
@@ -312,10 +322,38 @@
     function startPolling() {
       if (pollTimer) return;
       pollTimer = setInterval(poll, 2500);
+      typingPollTimer = setInterval(pollTyping, 1500);
     }
     function stopPolling() {
-      clearInterval(pollTimer);
-      pollTimer = null;
+      clearInterval(pollTimer);    pollTimer    = null;
+      clearInterval(typingPollTimer); typingPollTimer = null;
+      setTypingIndicator(false);
+    }
+
+    // ── Typing indicator ──────────────────────────────────────
+    const typingIndicator = document.getElementById('typing-indicator');
+    const typingLabel     = document.getElementById('typing-label');
+
+    function setTypingIndicator(visible) {
+      typingIndicator.style.display = visible ? 'flex' : 'none';
+      if (visible) requestAnimationFrame(() =>
+        msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' })
+      );
+    }
+
+    async function pollTyping() {
+      if (status !== 'active') return;
+      try {
+        const data = await fetch(`/api/matches/${matchId}/typing`).then(r => r.json());
+        setTypingIndicator(!!data.partner_typing);
+      } catch { /* ignore */ }
+    }
+
+    function sendTypingPing() {
+      if (status !== 'active') return;
+      if (typingSendTimer) return;           // already sent recently — skip
+      fetch(`/api/matches/${matchId}/typing`, { method: 'POST' }).catch(() => {});
+      typingSendTimer = setTimeout(() => { typingSendTimer = null; }, 1500);
     }
 
     // ── Send message ──────────────────────────────────────────
@@ -348,6 +386,7 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
     msgInput.addEventListener('input', () => {
+      sendTypingPing();
       sendBtn.disabled      = !msgInput.value.trim() || status !== 'active';
       msgInput.style.height = 'auto';
       msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + 'px';

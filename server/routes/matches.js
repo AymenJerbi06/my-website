@@ -40,6 +40,28 @@ router.get('/', async (req, res) => {
   });
 });
 
+// ── Typing indicator (in-memory, no DB needed) ────────────
+const typingStore = {}; // key: `${matchId}:${userId}` → timestamp ms
+const TYPING_TTL  = 3500; // ms of silence before indicator clears
+
+// POST /api/matches/:matchId/typing
+router.post('/typing', async (req, res) => {
+  const match = await loadMatch(req, res);
+  if (!match || match.status !== 'active') return res.json({ ok: false });
+  typingStore[`${match.id}:${req.session.userId}`] = Date.now();
+  return res.json({ ok: true });
+});
+
+// GET /api/matches/:matchId/typing
+router.get('/typing', async (req, res) => {
+  const match = await loadMatch(req, res);
+  if (!match) return;
+  const userId    = req.session.userId;
+  const partnerId = match.sharer_id === userId ? match.listener_id : match.sharer_id;
+  const ts        = typingStore[`${match.id}:${partnerId}`];
+  return res.json({ partner_typing: !!(ts && Date.now() - ts < TYPING_TTL) });
+});
+
 // ── GET /api/matches/:matchId/messages ────────────────────
 router.get('/messages', async (req, res) => {
   const match = await loadMatch(req, res);

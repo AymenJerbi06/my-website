@@ -40,12 +40,24 @@
 
       <!-- Empty state (hidden when messages arrive) -->
       <div class="chat-empty" id="chat-empty">
-        <div class="chat-empty-icon">💬</div>
+        <div class="chat-empty-orb">
+          <div class="chat-empty-ring ring-1"></div>
+          <div class="chat-empty-ring ring-2"></div>
+          <div class="chat-empty-icon">💬</div>
+        </div>
         <div class="chat-empty-title">Your session has started</div>
-        <div class="chat-empty-sub">Everything shared here is anonymous and private. Say hello to begin.</div>
+        <div class="chat-empty-sub">Everything shared here is anonymous and private.<br>Say hello to begin.</div>
       </div>
 
     </div>
+
+    <!-- Scroll-to-bottom FAB -->
+    <button class="scroll-fab" id="scroll-fab" aria-label="Scroll to latest">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
   </div>
 
   <!-- ═══ COMPOSER ═══ -->
@@ -70,7 +82,10 @@
         </svg>
       </button>
     </div>
-    <div class="composer-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
+    <div class="composer-footer">
+      <span class="composer-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</span>
+      <span class="char-counter" id="char-counter">0 / 2000</span>
+    </div>
   </div>
 
   <!-- ═══ REPORT MODAL ═══ -->
@@ -118,6 +133,7 @@
     let   lastSender = null;  // 'mine' | 'theirs' — for grouping
     let   pollTimer = null;
     let   iEndedSession = false; // true when this user clicked End Session
+    let   suppressAnimation = false;
 
     // ── DOM ──────────────────────────────────────────────────
     const msgArea      = document.getElementById('chat-messages');
@@ -129,6 +145,8 @@
     const sessionLabel = document.getElementById('session-type-label');
     const composerEnded= document.getElementById('composer-ended');
     const composerInner= document.getElementById('composer-inner');
+    const charCounter  = document.getElementById('char-counter');
+    const scrollFab    = document.getElementById('scroll-fab');
 
     // ── Helpers ───────────────────────────────────────────────
     function fmtTime(iso) {
@@ -142,7 +160,19 @@
     function scrollToBottom(smooth = true) {
       if (isNearBottom()) {
         msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: smooth ? 'smooth' : 'instant' });
+        if (scrollFab) scrollFab.classList.remove('visible');
       }
+    }
+
+    // ── Scroll FAB ──
+    if (scrollFab) {
+      msgArea.addEventListener('scroll', () => {
+        const dist = msgArea.scrollHeight - msgArea.scrollTop - msgArea.clientHeight;
+        scrollFab.classList.toggle('visible', dist > 160);
+      }, { passive: true });
+      scrollFab.addEventListener('click', () => {
+        msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' });
+      });
     }
 
     // ── Session state ─────────────────────────────────────────
@@ -208,6 +238,9 @@
       row.appendChild(time);
 
       inner.appendChild(row);
+      if (!suppressAnimation) {
+        requestAnimationFrame(() => row.classList.add('msg-animate'));
+      }
       if (msg.id > lastMsgId) lastMsgId = msg.id;
     }
 
@@ -231,10 +264,12 @@
 
       applyStatus();
 
-      // Load existing messages
+      // Load existing messages (no animation — they're already in history)
       const msgs = await fetch(`/api/matches/${matchId}/messages`).then(r => r.json()).catch(() => []);
       if (msgs.length > 0) {
+        suppressAnimation = true;
         msgs.forEach(renderMsg);
+        suppressAnimation = false;
         msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'instant' });
       }
 
@@ -306,6 +341,13 @@
       sendBtn.disabled      = !msgInput.value.trim() || status !== 'active';
       msgInput.style.height = 'auto';
       msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + 'px';
+      // Character counter
+      const len = msgInput.value.length;
+      if (charCounter) {
+        charCounter.textContent = len + ' / 2000';
+        charCounter.className   = 'char-counter' +
+          (len > 1950 ? ' limit' : len > 1800 ? ' warn' : '');
+      }
     });
 
     // ── End session ───────────────────────────────────────────

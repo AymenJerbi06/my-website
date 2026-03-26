@@ -47,6 +47,11 @@ body {
   background: rgba(255,255,255,0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(167,139,250,0.15);
+  transition: box-shadow 0.3s ease, border-bottom-color 0.3s ease;
+}
+.nav-wrap.scrolled {
+  box-shadow: 0 4px 28px rgba(100,60,200,0.12);
+  border-bottom-color: rgba(167,139,250,0.28);
 }
 
 nav {
@@ -187,16 +192,34 @@ nav {
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(167,139,250,0.25), transparent 70%);
   top: -100px; right: 5%;
+  animation: aurora-1 14s ease-in-out infinite;
 }
 .blob-2 {
   width: 350px; height: 350px;
   background: radial-gradient(circle, rgba(236,72,153,0.18), transparent 70%);
   bottom: 0; right: 20%;
+  animation: aurora-2 18s ease-in-out infinite;
 }
 .blob-3 {
   width: 300px; height: 300px;
   background: radial-gradient(circle, rgba(91,200,245,0.2), transparent 70%);
   top: 30%; left: -60px;
+  animation: aurora-3 11s ease-in-out infinite;
+}
+
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
+  33%       { transform: translate(40px, -30px) scale(1.12); opacity: 0.72; }
+  66%       { transform: translate(-20px, 20px) scale(0.94); opacity: 0.42; }
+}
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.45; }
+  40%       { transform: translate(-50px, 30px) scale(1.1); opacity: 0.62; }
+  75%       { transform: translate(30px, -18px) scale(1.16); opacity: 0.32; }
+}
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  50%       { transform: translate(22px, 42px) scale(1.22); opacity: 0.62; }
 }
 
 .hero-content { position: relative; z-index: 1; }
@@ -215,6 +238,23 @@ nav {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  animation: badge-shine 4s ease-in-out infinite 1s;
+}
+@keyframes badge-shine {
+  0%   { left: -80%; opacity: 1; }
+  40%  { left: 130%; opacity: 1; }
+  100% { left: 130%; opacity: 0; }
 }
 .badge-icon { width: 14px; height: 14px; flex-shrink: 0; }
 

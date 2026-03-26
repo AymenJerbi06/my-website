@@ -1,6 +1,19 @@
 lucide.createIcons();
 
 // ════════════════════════════════════════
+// Time-based greeting helper
+// ════════════════════════════════════════
+function buildGreeting(name) {
+  const h = new Date().getHours();
+  let period;
+  if      (h >= 5  && h < 12) period = 'Good morning';
+  else if (h >= 12 && h < 17) period = 'Good afternoon';
+  else if (h >= 17 && h < 21) period = 'Good evening';
+  else                         period = 'Hey there';
+  return `${period}, ${name} 👋`;
+}
+
+// ════════════════════════════════════════
 // State
 // ════════════════════════════════════════
 let selectedFormat = 'either';
@@ -23,7 +36,7 @@ function sessionRoute(matchId, mode) {
     if (!data.authenticated) return (window.location.href = '/');
 
     const name = data.user.email.split('@')[0];
-    document.getElementById('dash-greeting').textContent = `Hi, ${name}`;
+    document.getElementById('dash-greeting').textContent = buildGreeting(name);
 
     if (data.user.preferred_mode) {
       selectedFormat = data.user.preferred_mode;

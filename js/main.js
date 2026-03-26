@@ -1,3 +1,37 @@
+// ── Animated stat counters ──
+function animateCounter(el) {
+  const target   = parseInt(el.dataset.target, 10);
+  const suffix   = el.dataset.suffix || '';
+  const prefix   = el.dataset.prefix || '';
+  const duration = 1800;
+  const start    = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased    = 1 - Math.pow(1 - progress, 3);
+    const current  = Math.floor(eased * target);
+    el.innerHTML   = prefix + current.toLocaleString() + (progress >= 1 ? suffix : '');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.counted) {
+      entry.target.dataset.counted = '1';
+      animateCounter(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+// ── Nav scroll shadow ──
+const navWrap = document.querySelector('.nav-wrap');
+if (navWrap) {
+  window.addEventListener('scroll', () => {
+    navWrap.classList.toggle('scrolled', window.scrollY > 12);
+  }, { passive: true });
+}
+
 // ── Kicked-from-other-device notice ──
 if (new URLSearchParams(window.location.search).get('kicked') === '1') {
   setTimeout(() => {

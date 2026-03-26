@@ -152,7 +152,15 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     // ── Config ────────────────────────────────────────────────
-    const ICE_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302'] }] };
+    const ICE_CONFIG = {
+      iceServers: [
+        { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
+        // TURN relay — required for users behind symmetric NATs (mobile, corporate networks)
+        { urls: 'turn:openrelay.metered.ca:80',   username: 'openrelayproject', credential: 'openrelayproject' },
+        { urls: 'turn:openrelay.metered.ca:443',  username: 'openrelayproject', credential: 'openrelayproject' },
+        { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
+      ]
+    };
 
     // ── State ─────────────────────────────────────────────────
     const matchId          = parseInt(window.location.pathname.split('/')[2], 10);
@@ -164,6 +172,7 @@
     let iceCandidateBuffer = [];
     let remoteDescSet      = false;
     let ended              = false;
+    let offerSent          = false; // guard against double createOffer
 
     // Phase: 'connecting' | 'active' | 'ended'
     let phase = 'connecting';
@@ -248,7 +257,8 @@
 
     socket.on('peer-ready', async ({ initiator }) => {
       createPC();
-      if (initiator) {
+      if (initiator && !offerSent) {
+        offerSent = true;
         const offer = await pc.createOffer();
         await pc.setLocalDescription(offer);
         socket.emit('offer', { matchId, sdp: offer.sdp });
@@ -406,9 +416,9 @@
     window.addEventListener('pagehide', () => {
       localStream?.getTracks().forEach(t => t.stop());
       pc?.close();
-      // best-effort keepalive — tell server we left
       if (!ended) {
-        fetch(`/api/matches/${matchId}/leave`, { method: 'POST', keepalive: true }).catch(() => {});
+        // sendBeacon is the only reliable method on iOS Safari pagehide
+        navigator.sendBeacon(`/api/matches/${matchId}/leave-beacon`);
       }
     });
 

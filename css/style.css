@@ -7,6 +7,9 @@
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Remove 300ms tap delay on mobile for all interactive elements */
+a, button, [role="button"] { touch-action: manipulation; }
+
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {

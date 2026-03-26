@@ -59,12 +59,19 @@ module.exports = function setupSignaling(io) {
       const roomSize = io.sockets.adapter.rooms.get(`match:${matchId}`)?.size ?? 0;
 
       if (roomSize >= 2) {
-        // Both peers present — tell each who should initiate
-        // Sharer creates the offer; listener waits
-        io.to(`match:${matchId}`).emit('peer-ready', {});
-        // Re-emit individually with initiator flag so each side knows its role
-        io.to(`match:${matchId}`).except(socket.id).emit('peer-ready', { initiator: match.sharer_id === userId ? false : true });
+        // Tell each peer exactly once with the correct initiator flag.
+        // Sharer creates the offer (initiator:true); listener waits (initiator:false).
+        // We emit individually — never broadcast a blank event first.
+        const otherSocketIds = [...(io.sockets.adapter.rooms.get(`match:${matchId}`) || [])]
+          .filter(id => id !== socket.id);
+
+        // The user who just joined
         socket.emit('peer-ready', { initiator: match.sharer_id === userId });
+
+        // The user already in the room
+        if (otherSocketIds.length > 0) {
+          io.to(otherSocketIds[0]).emit('peer-ready', { initiator: match.sharer_id !== userId });
+        }
       } else {
         socket.emit('waiting-for-peer');
       }

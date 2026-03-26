@@ -113,6 +113,17 @@ router.post('/leave', (req, res) => {
   return res.json({ success: true, redirect: '/dashboard' });
 });
 
+// ── POST /api/matches/:matchId/leave-beacon ───────────────
+// sendBeacon-compatible leave (iOS Safari pagehide).
+router.post('/leave-beacon', (req, res) => {
+  const match = loadMatch(req, res);
+  if (!match) return;
+  if (match.status === 'active') {
+    db.prepare("UPDATE matches SET status='ended', ended_at=datetime('now') WHERE id=?").run(match.id);
+  }
+  return res.status(204).end();
+});
+
 // ── POST /api/matches/:matchId/ready ──────────────────────
 // Marks the current user as ready in the video prejoin lobby.
 // Returns { bothReady } so the client knows when to proceed.

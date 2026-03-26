@@ -287,8 +287,24 @@
     border-radius: 8px;
   }
 
-  /* Video stage must NOT be covered by the fixed dock */
-  .video-stage { padding-bottom: 58px; }
+  /*
+   * Give the video stage an explicit height so the remote video
+   * knows exactly how tall its box is and can contain correctly.
+   * Header ~38px + dock 54px = 92px chrome total.
+   */
+  .video-stage {
+    padding-bottom: 0;
+    height: calc(100dvh - 38px - 54px);
+    max-height: calc(100dvh - 38px - 54px);
+  }
+
+  /* Ensure remote video fills stage with contain (no cropping) */
+  #remote-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
 
   /* Controls dock: FIXED to bottom — immune to layout flow */
   .video-controls {

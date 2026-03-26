@@ -132,8 +132,7 @@
 
     // ── Helpers ───────────────────────────────────────────────
     function fmtTime(iso) {
-      return new Date(iso.replace(' ', 'T') + 'Z')
-        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
     function isNearBottom() {
@@ -317,7 +316,7 @@
       endModal.classList.remove('open');
       iEndedSession = true;
       stopPolling();
-      fetch(`/api/matches/${matchId}/leave`, { method: 'POST' }).catch(() => {});
+      await fetch(`/api/matches/${matchId}/leave`, { method: 'POST' }).catch(() => {});
       window.location.href = '/dashboard';
     });
 

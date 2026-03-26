@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supportly — Video Session</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/video.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="video-body video-session-body">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="dash-header" style="background:rgba(13,10,26,0.92);border-bottom:1px solid rgba(255,255,255,0.07);position:relative;z-index:30;">
+    <a href="/dashboard" class="brand">
+      <img src="/Logo.2.png" alt="Supportly" class="nav-logo" style="filter:brightness(10)" />
+    </a>
+    <div class="dash-header-right">
+      <span id="session-badge" style="font-size:13px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);
+                   border:1.5px solid rgba(167,139,250,0.25);border-radius:50px;padding:5px 14px;">
+        Video Session
+      </span>
+      <!-- Only shown in active state -->
+      <button class="btn-ghost small" id="btn-report-hdr" style="display:none;
+         color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.12);">Report</button>
+    </div>
+  </header>
+
+  <!-- ═══ VIDEO STAGE ═══ -->
+  <div class="video-stage">
+
+    <!-- Remote video (fills stage, hidden until stream arrives) -->
+    <video id="remote-video" autoplay playsinline style="display:none"></video>
+
+    <!-- ── STATE: CONNECTING (default) ── -->
+    <div class="connecting-overlay" id="state-connecting">
+      <div class="video-waiting-spinner"></div>
+      <p id="connecting-text">Connecting to your partner…</p>
+      <!-- "Leave" exit button for connecting state -->
+      <button id="btn-leave-connecting" style="
+        margin-top:8px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);
+        border-radius:50px;padding:10px 26px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.5);
+        font-family:'Nunito',sans-serif;cursor:pointer;transition:background 0.15s;">Leave</button>
+    </div>
+
+    <!-- Remote participant label (shown in active state) -->
+    <div class="remote-label" id="remote-label" style="display:none">Partner</div>
+
+    <!-- Local PiP (shown once local media is ready) -->
+    <div class="local-pip" id="local-pip" style="display:none">
+      <video id="local-video" autoplay muted playsinline></video>
+      <div class="pip-cam-off" id="pip-cam-off" style="display:none">👤</div>
+      <div class="pip-label">You</div>
+    </div>
+
+    <!-- ── STATE: ENDED ── -->
+    <div class="ended-overlay" id="state-ended">
+      <div style="font-size:48px">👋</div>
+      <h2>Session ended</h2>
+      <p>The video call has ended. Redirecting you to the dashboard…</p>
+      <a href="/dashboard">Back to Dashboard</a>
+    </div>
+
+  </div>
+
+  <!-- ═══ CONTROLS (shown only in active state) ═══ -->
+  <div class="video-controls" id="video-controls" style="display:none">
+    <div class="ctrl-label">
+      <button class="ctrl-btn" id="btn-mic" title="Toggle microphone">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </button>
+      Mic
+    </div>
+    <div class="ctrl-label">
+      <button class="ctrl-btn" id="btn-cam" title="Toggle camera">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="23 7 16 12 23 17 23 7"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+      </button>
+      Camera
+    </div>
+    <div class="ctrl-label">
+      <button class="ctrl-btn end-call-btn" id="btn-end" title="End session">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07C9.44 17.29 7.76 15.57 6.06 13.87a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 3h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 10.9"/>
+          <line x1="23" y1="1" x2="1" y2="23"/>
+        </svg>
+      </button>
+      End Call
+    </div>
+  </div>
+
+  <!-- ═══ REPORT MODAL ═══ -->
+  <div id="report-modal" style="
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(13,10,26,0.75); backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#1a1128;border:1.5px solid rgba(167,139,250,0.2);border-radius:20px;
+                padding:32px 28px;max-width:420px;width:100%;
+                box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+      <h2 style="font-size:19px;font-weight:800;color:#fff;margin-bottom:6px;">Report this session</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:20px;">
+        Help keep the community safe. Reports are reviewed by our team.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        <label class="rrd"><input type="radio" name="rr" value="harassment"> Harassment or abuse</label>
+        <label class="rrd"><input type="radio" name="rr" value="inappropriate"> Inappropriate content</label>
+        <label class="rrd"><input type="radio" name="rr" value="spam"> Spam or suspicious behavior</label>
+        <label class="rrd"><input type="radio" name="rr" value="other"> Other</label>
+      </div>
+      <textarea id="report-details" rows="3" placeholder="Additional details (optional)…" style="
+        width:100%;box-sizing:border-box;background:rgba(255,255,255,0.05);
+        border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;
+        padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;
+        color:#fff;resize:none;outline:none;margin-bottom:14px;"></textarea>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;cursor:pointer;">
+        <input type="checkbox" id="report-end-now" style="accent-color:#7C3AED;" />
+        Also end this session immediately
+      </label>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button id="btn-rpt-cancel" style="background:transparent;border:1.5px solid rgba(255,255,255,0.15);
+          border-radius:50px;padding:9px 20px;font-size:14px;font-weight:700;
+          color:rgba(255,255,255,0.45);cursor:pointer;font-family:'Nunito',sans-serif;">Cancel</button>
+        <button id="btn-rpt-submit" disabled style="background:linear-gradient(135deg,#7C3AED,#9333ea);
+          border:none;border-radius:50px;padding:9px 22px;font-size:14px;font-weight:700;
+          color:#fff;cursor:pointer;font-family:'Nunito',sans-serif;opacity:0.4;transition:opacity 0.15s;">Submit Report</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .rrd {
+      display:flex;align-items:center;gap:10px;padding:10px 14px;
+      border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;
+      transition:border-color 0.15s,background 0.15s;font-size:14px;
+      color:rgba(255,255,255,0.7);font-weight:600;font-family:'Nunito',sans-serif;
+    }
+    .rrd:hover { border-color:rgba(167,139,250,0.5);background:rgba(167,139,250,0.08); }
+    .rrd input[type="radio"] { accent-color:#7C3AED; }
+    .rrd.selected { border-color:#a78bfa;background:rgba(167,139,250,0.12); }
+  </style>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // ── Config ────────────────────────────────────────────────
+    const ICE_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302'] }] };
+
+    // ── State ─────────────────────────────────────────────────
+    const matchId          = parseInt(window.location.pathname.split('/')[2], 10);
+    let myRole             = null;
+    let localStream        = null;
+    let pc                 = null;
+    let micOn              = true;
+    let camOn              = true;
+    let iceCandidateBuffer = [];
+    let remoteDescSet      = false;
+    let ended              = false;
+
+    // Phase: 'connecting' | 'active' | 'ended'
+    let phase = 'connecting';
+
+    // ── DOM ───────────────────────────────────────────────────
+    const localVideo        = document.getElementById('local-video');
+    const remoteVideo       = document.getElementById('remote-video');
+    const stateConnecting   = document.getElementById('state-connecting');
+    const connectingText    = document.getElementById('connecting-text');
+    const stateEnded        = document.getElementById('state-ended');
+    const remoteLabel       = document.getElementById('remote-label');
+    const localPip          = document.getElementById('local-pip');
+    const pipCamOff         = document.getElementById('pip-cam-off');
+    const videoControls     = document.getElementById('video-controls');
+    const micBtn            = document.getElementById('btn-mic');
+    const camBtn            = document.getElementById('btn-cam');
+    const reportModal       = document.getElementById('report-modal');
+    const rptSubmit         = document.getElementById('btn-rpt-submit');
+
+    // ── Phase transitions ─────────────────────────────────────
+    function setPhase(p) {
+      phase = p;
+      // Connecting overlay
+      stateConnecting.style.display     = p === 'connecting' ? 'flex' : 'none';
+      // Active elements
+      remoteVideo.style.display         = p === 'active'     ? 'block' : 'none';
+      remoteLabel.style.display         = p === 'active'     ? 'block' : 'none';
+      videoControls.style.display       = p === 'active'     ? 'flex'  : 'none';
+      document.getElementById('btn-report-hdr').style.display = p === 'active' ? '' : 'none';
+      // PiP shown in both connecting and active (once stream acquired)
+      // Ended overlay
+      if (p === 'ended') stateEnded.classList.add('visible');
+    }
+
+    // ── Socket ────────────────────────────────────────────────
+    const socket = io();
+
+    // ── Init ──────────────────────────────────────────────────
+    (async () => {
+      const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => null);
+      if (!me?.authenticated) { window.location.href = '/'; return; }
+
+      const res   = await fetch(`/api/matches/${matchId}`);
+      const match = await res.json();
+      if (!res.ok || match.mode !== 'video') { window.location.href = '/dashboard'; return; }
+
+      myRole = match.role;
+      const partnerRole = myRole === 'sharer' ? 'listener' : 'sharer';
+      remoteLabel.textContent = partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer';
+
+      // Restore mic/cam states from prejoin lobby
+      const prejoin = JSON.parse(sessionStorage.getItem('prejoin') || '{"micOn":true,"camOn":true}');
+      sessionStorage.removeItem('prejoin');
+      micOn = prejoin.micOn;
+      camOn = prejoin.camOn;
+
+      // Acquire local media — graceful fallback
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      } catch {
+        try { localStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+        catch { /* media unavailable — connect audio-less */ }
+      }
+
+      if (localStream) {
+        localVideo.srcObject = localStream;
+        localStream.getAudioTracks().forEach(t => t.enabled = micOn);
+        localStream.getVideoTracks().forEach(t => t.enabled = camOn);
+        setMicIcon(micOn);
+        setCamIcon(camOn);
+        localPip.style.display = 'block';
+      }
+
+      socket.emit('join-room', { matchId });
+    })();
+
+    // ── Signaling ─────────────────────────────────────────────
+    socket.on('waiting-for-peer', () => {
+      connectingText.textContent = 'Waiting for your partner to join…';
+      setPhase('connecting');
+    });
+
+    socket.on('peer-ready', async ({ initiator }) => {
+      createPC();
+      if (initiator) {
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        socket.emit('offer', { matchId, sdp: offer.sdp });
+      }
+    });
+
+    socket.on('offer', async ({ sdp }) => {
+      if (!pc) createPC();
+      await pc.setRemoteDescription(new RTCSessionDescription({ type: 'offer', sdp }));
+      remoteDescSet = true;
+      await flushIce();
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+      socket.emit('answer', { matchId, sdp: answer.sdp });
+    });
+
+    socket.on('answer', async ({ sdp }) => {
+      await pc.setRemoteDescription(new RTCSessionDescription({ type: 'answer', sdp }));
+      remoteDescSet = true;
+      await flushIce();
+    });
+
+    socket.on('ice-candidate', async ({ candidate }) => {
+      if (!candidate) return;
+      const ice = new RTCIceCandidate(candidate);
+      remoteDescSet && pc ? pc.addIceCandidate(ice).catch(() => {}) : iceCandidateBuffer.push(ice);
+    });
+
+    socket.on('peer-disconnected', () => {
+      connectingText.textContent = 'Your partner lost connection — waiting to reconnect…';
+      document.getElementById('btn-leave-connecting').textContent = 'Leave session';
+      setPhase('connecting');
+    });
+
+    socket.on('session-ended', () => {
+      // Partner deliberately ended the call
+      document.querySelector('#state-ended h2').textContent = 'Your partner ended the call';
+      document.querySelector('#state-ended p').textContent  = 'The session has ended. Redirecting you to the dashboard…';
+      endSession(false);
+    });
+    socket.on('error', ({ message }) => console.warn('Signaling:', message));
+
+    // ── RTCPeerConnection ──────────────────────────────────────
+    function createPC() {
+      if (pc) return;
+      pc = new RTCPeerConnection(ICE_CONFIG);
+      if (localStream) localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+
+      pc.ontrack = (e) => {
+        remoteVideo.srcObject = e.streams[0];
+        setPhase('active');
+      };
+
+      pc.onicecandidate = (e) => {
+        if (e.candidate) socket.emit('ice-candidate', { matchId, candidate: e.candidate.toJSON() });
+      };
+
+      pc.onconnectionstatechange = () => {
+        if (pc.connectionState === 'connected') {
+          setPhase('active');
+        } else if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+          connectingText.textContent = 'Connection lost — attempting to reconnect…';
+          setPhase('connecting');
+        }
+      };
+    }
+
+    async function flushIce() {
+      for (const c of iceCandidateBuffer) await pc.addIceCandidate(c).catch(() => {});
+      iceCandidateBuffer = [];
+    }
+
+    // ── Controls ──────────────────────────────────────────────
+    function setMicIcon(on) {
+      micBtn.classList.toggle('off', !on);
+      micBtn.innerHTML = on
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+             <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+             <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+           </svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <line x1="1" y1="1" x2="23" y2="23"/>
+             <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/>
+             <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/>
+             <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+           </svg>`;
+    }
+
+    function setCamIcon(on) {
+      camBtn.classList.toggle('off', !on);
+      pipCamOff.style.display = on ? 'none' : 'flex';
+      camBtn.innerHTML = on
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <polygon points="23 7 16 12 23 17 23 7"/>
+             <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+           </svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <line x1="1" y1="1" x2="23" y2="23"/>
+             <path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34m-7.72-2.06A3 3 0 0 1 15 15H9a3 3 0 0 1-3-3V9"/>
+           </svg>`;
+    }
+
+    micBtn.addEventListener('click', () => {
+      if (!localStream) return;
+      micOn = !micOn;
+      localStream.getAudioTracks().forEach(t => t.enabled = micOn);
+      setMicIcon(micOn);
+    });
+
+    camBtn.addEventListener('click', () => {
+      if (!localStream) return;
+      camOn = !camOn;
+      localStream.getVideoTracks().forEach(t => t.enabled = camOn);
+      setCamIcon(camOn);
+    });
+
+    document.getElementById('btn-end').addEventListener('click', () => endSession(true));
+    document.getElementById('btn-leave-connecting').addEventListener('click', () => endSession(true));
+
+    // ── End session ───────────────────────────────────────────
+    function endSession(notify) {
+      if (ended) return;
+      ended = true;
+      if (notify) socket.emit('end-session', { matchId });
+      localStream?.getTracks().forEach(t => t.stop());
+      pc?.close();
+      socket.disconnect();
+      setPhase('ended');
+      setTimeout(() => { window.location.href = '/dashboard'; }, 3000);
+    }
+
+    // ── Report ────────────────────────────────────────────────
+    document.getElementById('btn-report-hdr').addEventListener('click', () => {
+      reportModal.style.display = 'flex';
+    });
+    document.getElementById('btn-rpt-cancel').addEventListener('click', () => {
+      reportModal.style.display = 'none';
+    });
+
+    document.querySelectorAll('input[name="rr"]').forEach(r => {
+      r.addEventListener('change', () => { rptSubmit.disabled = false; rptSubmit.style.opacity = '1'; });
+    });
+    document.querySelectorAll('.rrd').forEach(row => {
+      row.addEventListener('click', () => {
+        document.querySelectorAll('.rrd').forEach(r => r.classList.remove('selected'));
+        row.classList.add('selected');
+      });
+    });
+
+    window.addEventListener('pagehide', () => {
+      localStream?.getTracks().forEach(t => t.stop());
+      pc?.close();
+      // best-effort keepalive — tell server we left
+      if (!ended) {
+        fetch(`/api/matches/${matchId}/leave`, { method: 'POST', keepalive: true }).catch(() => {});
+      }
+    });
+
+    rptSubmit.addEventListener('click', async () => {
+      const reason  = document.querySelector('input[name="rr"]:checked')?.value;
+      const details = document.getElementById('report-details').value.trim();
+      const endNow  = document.getElementById('report-end-now').checked;
+      if (!reason) return;
+      rptSubmit.disabled = true;
+      rptSubmit.textContent = 'Submitting…';
+      await fetch(`/api/matches/${matchId}/report`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason, details, endSession: endNow }),
+      }).catch(() => {});
+      reportModal.style.display = 'none';
+      if (endNow) endSession(true);
+    });
+  </script>
+</body>
+</html>

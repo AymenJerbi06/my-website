@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supportly — You're Never Alone</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══ NAV ═══ -->
+  <header class="nav-wrap">
+    <nav>
+      <a href="#" class="brand">
+        <img src="Logo.2.png" alt="Supportly" class="nav-logo" />
+      </a>
+      <div class="nav-actions">
+        <button class="btn-ghost" onclick="openModal('login')">Log In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="hero-content">
+      <span class="badge">
+        <i data-lucide="shield" class="badge-icon"></i>
+        Anonymous &amp; Safe
+      </span>
+      <h1>A place to speak.<br /><span class="h1-grad">A place to listen.</span></h1>
+      <p>Supportly connects you anonymously with someone who genuinely cares — whether you need to share what's weighing on you, or you're ready to be there for someone else.</p>
+      <div class="hero-cta">
+        <button class="btn-primary large" onclick="openModal('signup')">Start Chatting Free</button>
+        <a href="#how" class="btn-ghost large">How It Works</a>
+      </div>
+      <p class="trust-signal">
+        <i data-lucide="clock" class="trust-icon"></i>
+        Takes less than 10 seconds to get matched · No signup required to start
+      </p>
+    </div>
+
+    <div class="hero-visual">
+      <div class="app-mockup">
+        <div class="mockup-header">
+          <img src="Logo.2.png" alt="Supportly" class="mockup-logo" />
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mockup-match">
+          <div class="match-icon-wrap">
+            <i data-lucide="headphones"></i>
+          </div>
+          <div class="match-info">
+            <p class="match-name">Anonymous Listener</p>
+            <p class="match-status">✦ Ready to support you</p>
+          </div>
+          <button class="match-connect-btn">Connect</button>
+        </div>
+        <div class="mockup-chat">
+          <div class="chat-row right">
+            <div class="chat-bubble right">I've been feeling really anxious lately...</div>
+          </div>
+          <div class="chat-row left">
+            <div class="chat-bubble left">I hear you. Take your time 💜</div>
+          </div>
+          <div class="chat-row right">
+            <div class="chat-bubble right">Just knowing someone is listening helps so much.</div>
+          </div>
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mockup-input">
+          <span class="input-placeholder">Share what's on your mind...</span>
+          <button class="send-btn"><i data-lucide="send"></i></button>
+        </div>
+      </div>
+      <div class="floating-badge badge-left">
+        <i data-lucide="shield-check"></i>
+        <span>100% Anonymous</span>
+      </div>
+      <div class="floating-badge badge-right">
+        <i data-lucide="zap"></i>
+        <span>Matched in seconds</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="how" id="how">
+    <div class="section-header reveal">
+      <h2>How Supportly Works</h2>
+      <p>Three simple steps to a meaningful conversation.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" style="--delay:0s">
+        <div class="icon-wrap"><i data-lucide="shield"></i></div>
+        <h3>Stay Anonymous</h3>
+        <p>No names, no photos. Choose a mood and a role — nothing more required to get started.</p>
+      </div>
+      <div class="step-arrow reveal" style="--delay:0.1s">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="step reveal" style="--delay:0.2s">
+        <div class="icon-wrap"><i data-lucide="users"></i></div>
+        <h3>Get Matched</h3>
+        <p>Our system pairs a <strong>Sharer</strong> with a <strong>Listener</strong> who is genuinely ready to help.</p>
+      </div>
+      <div class="step-arrow reveal" style="--delay:0.3s">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="step reveal" style="--delay:0.4s">
+        <div class="icon-wrap"><i data-lucide="message-circle"></i></div>
+        <h3>Talk It Out</h3>
+        <p>Chat via text or hop on a video call — whichever feels most comfortable for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROLES ═══ -->
+  <section class="roles">
+    <div class="role-card sharer reveal" style="--delay:0s">
+      <div class="role-icon-wrap sharer-icon"><i data-lucide="message-circle"></i></div>
+      <h3>The Sharer</h3>
+      <p>Something weighing on you? You'll be matched with a caring listener who is fully present — no judgement, no rush.</p>
+      <ul>
+        <li><i data-lucide="check-circle"></i> Share at your own pace</li>
+        <li><i data-lucide="check-circle"></i> Text or video, your choice</li>
+        <li><i data-lucide="check-circle"></i> Fully anonymous, always</li>
+      </ul>
+    </div>
+    <div class="role-card listener reveal" style="--delay:0.15s">
+      <div class="role-icon-wrap listener-icon"><i data-lucide="headphones"></i></div>
+      <h3>The Listener</h3>
+      <p>Feel like making a difference today? Lend an ear, offer perspective, and remind someone they're not alone.</p>
+      <ul>
+        <li><i data-lucide="check-circle"></i> Be there when it matters</li>
+        <li><i data-lucide="check-circle"></i> Give advice or just listen</li>
+        <li><i data-lucide="check-circle"></i> Earn kindness badges</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ SOCIAL PROOF ═══ -->
+  <section class="social-proof">
+    <div class="stats">
+      <div class="stat reveal" style="--delay:0s">
+        <span class="stat-num">12,400+</span>
+        <span class="stat-label">Conversations this week</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat reveal" style="--delay:0.1s">
+        <span class="stat-num">94%</span>
+        <span class="stat-label">Feel better after talking</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat reveal" style="--delay:0.2s">
+        <span class="stat-num">&lt; 2 min</span>
+        <span class="stat-label">Average match time</span>
+      </div>
+    </div>
+    <div class="testimonials">
+      <div class="testimonial reveal" style="--delay:0s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"I didn't expect to feel so heard by a complete stranger. Just having someone listen made everything feel lighter."</p>
+        <div class="t-author">
+          <div class="t-avatar">M</div>
+          <span>M.K. &mdash; Anonymous User</span>
+        </div>
+      </div>
+      <div class="testimonial reveal" style="--delay:0.15s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"Being a listener reminded me I'm not alone either. It's therapeutic for both sides of the conversation."</p>
+        <div class="t-author">
+          <div class="t-avatar">J</div>
+          <span>J.R. &mdash; Listener</span>
+        </div>
+      </div>
+      <div class="testimonial reveal" style="--delay:0.3s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"I was skeptical at first, but the anonymity made it so much easier to open up. No judgment, just real support."</p>
+        <div class="t-author">
+          <div class="t-avatar">A</div>
+          <span>A.T. &mdash; Anonymous User</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section class="features" id="features">
+    <div class="section-header reveal">
+      <h2>Everything You Need to Connect</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature reveal" style="--delay:0s">
+        <div class="icon-wrap"><i data-lucide="eye-off"></i></div>
+        <h4>100% Anonymous</h4>
+        <p>Your identity stays private. Connect freely without fear or judgement.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.07s">
+        <div class="icon-wrap"><i data-lucide="video"></i></div>
+        <h4>Video or Text</h4>
+        <p>Choose a format that suits the moment — always your call.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.14s">
+        <div class="icon-wrap"><i data-lucide="zap"></i></div>
+        <h4>Instant Matching</h4>
+        <p>No waiting lists. Get connected to the right person in seconds.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.21s">
+        <div class="icon-wrap"><i data-lucide="shield-check"></i></div>
+        <h4>Safe Space</h4>
+        <p>Built-in reporting and moderation keep the community respectful.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.28s">
+        <div class="icon-wrap"><i data-lucide="moon"></i></div>
+        <h4>Always Available</h4>
+        <p>Day or night — someone on Supportly is always ready to listen.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.35s">
+        <div class="icon-wrap"><i data-lucide="leaf"></i></div>
+        <h4>No Pressure</h4>
+        <p>End any session at any time. You're always in control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BANNER ═══ -->
+  <section class="cta-banner">
+    <div class="cta-content reveal">
+      <h2>You don't have to go through it alone.</h2>
+      <p>Join Supportly and find your match in seconds.</p>
+      <button class="btn-white large" onclick="openModal('signup')">Create a Free Account</button>
+      <p class="cta-trust">
+        <i data-lucide="lock" class="trust-icon-sm"></i> No credit card required &nbsp;&middot;&nbsp;
+        <i data-lucide="user-x" class="trust-icon-sm"></i> Stay fully anonymous
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="Logo.2.png" alt="Supportly" class="footer-logo" />
+        <p class="footer-tagline">A safe space for every voice.<br />Made with 💜 for everyone who needs to be heard.</p>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Supportly. All rights reserved.</p>
+        <nav class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact</a>
+          <a href="#">Safety</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ LOGIN MODAL ═══ -->
+  <div class="modal-overlay" id="modal-login" onclick="closeModal('login')">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('login')">✕</button>
+      <img src="Logo.2.png" alt="Supportly" class="modal-logo" />
+      <h2>Welcome back</h2>
+      <p class="modal-sub">Log in to your Supportly account</p>
+      <form id="form-login">
+        <div class="form-error hidden" id="error-login"></div>
+        <input type="email"    id="login-email"    name="email"    placeholder="Email address"  autocomplete="email" required />
+        <input type="password" id="login-password" name="password" placeholder="Password"       autocomplete="current-password" required />
+        <button class="btn-primary full" type="submit" id="btn-login-submit">Log In</button>
+      </form>
+      <p class="modal-switch">Don't have an account? <a href="#" onclick="switchModal('login','signup')">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- ═══ SIGNUP MODAL ═══ -->
+  <div class="modal-overlay" id="modal-signup" onclick="closeModal('signup')">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('signup')">✕</button>
+      <img src="Logo.2.png" alt="Supportly" class="modal-logo" />
+      <h2>Join Supportly</h2>
+      <p class="modal-sub">Create your free anonymous account</p>
+      <form id="form-signup">
+        <div class="form-error hidden" id="error-signup"></div>
+        <input type="email"    id="signup-email"    name="email"            placeholder="Email address"    autocomplete="email" required />
+        <input type="password" id="signup-password" name="password"         placeholder="Password — 8+ chars, 1 uppercase, 1 number" autocomplete="new-password" required />
+        <input type="password" id="signup-confirm"  name="confirmPassword"  placeholder="Confirm password" autocomplete="new-password" required />
+        <button class="btn-primary full" type="submit" id="btn-signup-submit">Create Account</button>
+      </form>
+      <p class="modal-trust"><i data-lucide="lock" class="trust-icon-sm"></i> No credit card · Always anonymous</p>
+      <p class="modal-switch">Already have an account? <a href="#" onclick="switchModal('signup','login')">Log in</a></p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

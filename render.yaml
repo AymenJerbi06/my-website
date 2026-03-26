@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: supportly
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /var/data/supportly.db
+    disk:
+      name: supportly-data
+      mountPath: /var/data
+      sizeGB: 1

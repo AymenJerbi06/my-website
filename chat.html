@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supportly — Text Session</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="chat-body">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="chat-header">
+    <div class="chat-header-brand">
+      <a href="/dashboard"><img src="/Logo.2.png" alt="Supportly" /></a>
+    </div>
+
+    <div class="chat-header-partner">
+      <div class="partner-pip" id="partner-pip">💬</div>
+      <div class="partner-identity">
+        <div class="partner-name" id="partner-name">Anonymous Partner</div>
+        <div class="session-type">
+          <span class="session-dot" id="session-dot"></span>
+          <span id="session-type-label">Text Session</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-header-actions">
+      <button class="hdr-btn" id="btn-report">Report</button>
+      <button class="hdr-btn danger" id="btn-end">End Session</button>
+    </div>
+  </header>
+
+  <!-- ═══ MESSAGE AREA ═══ -->
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-messages-inner" id="chat-inner">
+
+      <!-- Empty state (hidden when messages arrive) -->
+      <div class="chat-empty" id="chat-empty">
+        <div class="chat-empty-icon">💬</div>
+        <div class="chat-empty-title">Your session has started</div>
+        <div class="chat-empty-sub">Everything shared here is anonymous and private. Say hello to begin.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ COMPOSER ═══ -->
+  <div class="chat-composer" id="chat-composer">
+    <!-- Ended banner -->
+    <div class="composer-ended" id="composer-ended">
+      This session has ended — no new messages can be sent.
+    </div>
+
+    <div class="composer-inner" id="composer-inner">
+      <textarea
+        id="msg-input"
+        rows="1"
+        placeholder="Type a message…"
+        maxlength="2000"
+      ></textarea>
+      <button class="composer-send" id="btn-send" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="composer-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
+  </div>
+
+  <!-- ═══ REPORT MODAL ═══ -->
+  <div class="modal-overlay" id="report-modal">
+    <div class="modal-card">
+      <h2>Report this session</h2>
+      <p class="modal-sub">Help keep the community safe. Reports are reviewed by our team.</p>
+      <div class="report-reasons" id="report-reasons">
+        <label class="report-reason"><input type="radio" name="report-reason" value="harassment"> Harassment or abuse</label>
+        <label class="report-reason"><input type="radio" name="report-reason" value="inappropriate"> Inappropriate content</label>
+        <label class="report-reason"><input type="radio" name="report-reason" value="spam"> Spam or suspicious behavior</label>
+        <label class="report-reason"><input type="radio" name="report-reason" value="other"> Other</label>
+      </div>
+      <textarea class="report-details" id="report-details" rows="3" placeholder="Additional details (optional)…"></textarea>
+      <label class="report-end-check">
+        <input type="checkbox" id="report-end-session" />
+        Also end this session immediately
+      </label>
+      <div class="modal-actions">
+        <button class="btn-cancel-modal" id="btn-report-cancel">Cancel</button>
+        <button class="btn-submit-modal" id="btn-report-submit" disabled>Submit Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ END SESSION CONFIRM ═══ -->
+  <div class="modal-overlay" id="end-modal">
+    <div class="modal-card" style="text-align:center">
+      <div class="end-confirm-icon">👋</div>
+      <h2>End this session?</h2>
+      <p class="modal-sub">This closes the conversation for both of you.<br />You can start a new session any time.</p>
+      <div class="modal-actions" style="justify-content:center">
+        <button class="btn-cancel-modal" id="btn-end-cancel">Keep talking</button>
+        <button class="btn-submit-modal danger" id="btn-end-confirm">Yes, end session</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── State ────────────────────────────────────────────────
+    const matchId   = parseInt(window.location.pathname.split('/').pop(), 10);
+    let   myRole    = null;
+    let   status    = null;   // 'active' | 'ended'
+    let   lastMsgId = 0;
+    let   lastSender = null;  // 'mine' | 'theirs' — for grouping
+    let   pollTimer = null;
+    let   iEndedSession = false; // true when this user clicked End Session
+
+    // ── DOM ──────────────────────────────────────────────────
+    const msgArea      = document.getElementById('chat-messages');
+    const inner        = document.getElementById('chat-inner');
+    const emptyState   = document.getElementById('chat-empty');
+    const msgInput     = document.getElementById('msg-input');
+    const sendBtn      = document.getElementById('btn-send');
+    const sessionDot   = document.getElementById('session-dot');
+    const sessionLabel = document.getElementById('session-type-label');
+    const composerEnded= document.getElementById('composer-ended');
+    const composerInner= document.getElementById('composer-inner');
+
+    // ── Helpers ───────────────────────────────────────────────
+    function fmtTime(iso) {
+      return new Date(iso.replace(' ', 'T') + 'Z')
+        .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function isNearBottom() {
+      return msgArea.scrollHeight - msgArea.scrollTop - msgArea.clientHeight < 120;
+    }
+
+    function scrollToBottom(smooth = true) {
+      if (isNearBottom()) {
+        msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: smooth ? 'smooth' : 'instant' });
+      }
+    }
+
+    // ── Session state ─────────────────────────────────────────
+    function applyStatus() {
+      if (status === 'active') {
+        sessionDot.className   = 'session-dot';
+        sessionLabel.textContent = 'Text Session · Active';
+        composerEnded.classList.remove('visible');
+        composerInner.style.display = '';
+        setInputEnabled(true);
+      } else {
+        sessionDot.className   = 'session-dot ended';
+        sessionLabel.textContent = 'Text Session · Ended';
+        composerEnded.classList.add('visible');
+        composerInner.style.display = 'none';
+        setInputEnabled(false);
+        renderSystemMsg('Session ended');
+      }
+    }
+
+    function setInputEnabled(on) {
+      msgInput.disabled = !on;
+      sendBtn.disabled  = !on || msgInput.value.trim().length === 0;
+    }
+
+    // ── Message rendering ─────────────────────────────────────
+    function renderSystemMsg(text) {
+      const el = document.createElement('div');
+      el.className   = 'msg-system';
+      el.textContent = text;
+      inner.appendChild(el);
+      lastSender = null; // reset grouping after system msg
+    }
+
+    function renderMsg(msg) {
+      emptyState.style.display = 'none';
+
+      const dir      = msg.mine ? 'mine' : 'theirs';
+      const isNew    = dir !== lastSender;
+      lastSender     = dir;
+
+      const row = document.createElement('div');
+      row.classList.add('msg-row', dir);
+      if (isNew) row.classList.add('group-start');
+      row.dataset.id = msg.id;
+
+      // Sender label only on first bubble of a run
+      if (isNew) {
+        const lbl = document.createElement('div');
+        lbl.className   = 'msg-sender';
+        lbl.textContent = msg.mine ? 'You' : (myRole === 'sharer' ? 'Listener' : 'Sharer');
+        row.appendChild(lbl);
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className   = 'msg-bubble' + (isNew ? '' : ' continued');
+      bubble.textContent = msg.content;
+      row.appendChild(bubble);
+
+      const time = document.createElement('div');
+      time.className   = 'msg-time';
+      time.textContent = fmtTime(msg.created_at);
+      row.appendChild(time);
+
+      inner.appendChild(row);
+      if (msg.id > lastMsgId) lastMsgId = msg.id;
+    }
+
+    // ── Init ─────────────────────────────────────────────────
+    (async () => {
+      const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => null);
+      if (!me?.authenticated) { window.location.href = '/'; return; }
+
+      const res   = await fetch(`/api/matches/${matchId}`);
+      const match = await res.json();
+      if (!res.ok) { window.location.href = '/dashboard'; return; }
+
+      myRole = match.role;
+      status = match.status;
+
+      // Set partner info
+      const partnerRole = myRole === 'sharer' ? 'listener' : 'sharer';
+      document.getElementById('partner-pip').textContent  = partnerRole === 'listener' ? '🎧' : '💬';
+      document.getElementById('partner-pip').className    = 'partner-pip ' + partnerRole;
+      document.getElementById('partner-name').textContent = partnerRole === 'listener' ? 'Your Listener' : 'Your Sharer';
+
+      applyStatus();
+
+      // Load existing messages
+      const msgs = await fetch(`/api/matches/${matchId}/messages`).then(r => r.json()).catch(() => []);
+      if (msgs.length > 0) {
+        msgs.forEach(renderMsg);
+        msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'instant' });
+      }
+
+      if (status === 'active') startPolling();
+    })();
+
+    // ── Polling ───────────────────────────────────────────────
+    async function poll() {
+      try {
+        const msgs = await fetch(`/api/matches/${matchId}/messages`).then(r => r.json());
+        let added = false;
+        msgs.forEach(m => { if (m.id > lastMsgId) { renderMsg(m); added = true; } });
+        if (added) scrollToBottom();
+
+        // Check for remote session end
+        if (status === 'active') {
+          const info = await fetch(`/api/matches/${matchId}`).then(r => r.json());
+          if (info.status === 'ended') {
+            status = 'ended';
+            stopPolling();
+            applyStatus();
+            if (!iEndedSession) {
+              renderSystemMsg('Your partner has left the session.');
+            }
+          }
+        }
+      } catch { /* ignore */ }
+    }
+
+    function startPolling() {
+      if (pollTimer) return;
+      pollTimer = setInterval(poll, 2500);
+    }
+    function stopPolling() {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+
+    // ── Send message ──────────────────────────────────────────
+    async function sendMessage() {
+      const content = msgInput.value.trim();
+      if (!content || status !== 'active') return;
+
+      sendBtn.disabled  = true;
+      msgInput.disabled = true;
+
+      try {
+        const res  = await fetch(`/api/matches/${matchId}/messages`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msgInput.value        = '';
+          msgInput.style.height = 'auto';
+          renderMsg(data);
+          msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' });
+        }
+      } finally {
+        if (status === 'active') { sendBtn.disabled = false; msgInput.disabled = false; msgInput.focus(); }
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    msgInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+    msgInput.addEventListener('input', () => {
+      sendBtn.disabled      = !msgInput.value.trim() || status !== 'active';
+      msgInput.style.height = 'auto';
+      msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + 'px';
+    });
+
+    // ── End session ───────────────────────────────────────────
+    const endModal = document.getElementById('end-modal');
+    document.getElementById('btn-end').addEventListener('click', () => { endModal.classList.add('open'); });
+    document.getElementById('btn-end-cancel').addEventListener('click', () => { endModal.classList.remove('open'); });
+    document.getElementById('btn-end-confirm').addEventListener('click', async () => {
+      endModal.classList.remove('open');
+      iEndedSession = true;
+      stopPolling();
+      fetch(`/api/matches/${matchId}/leave`, { method: 'POST' }).catch(() => {});
+      window.location.href = '/dashboard';
+    });
+
+    // ── Report ────────────────────────────────────────────────
+    const reportModal  = document.getElementById('report-modal');
+    const reportSubmit = document.getElementById('btn-report-submit');
+
+    document.getElementById('btn-report').addEventListener('click', () => { reportModal.classList.add('open'); });
+    document.getElementById('btn-report-cancel').addEventListener('click', () => { reportModal.classList.remove('open'); });
+
+    // Enable submit when a reason is selected
+    document.querySelectorAll('input[name="report-reason"]').forEach(radio => {
+      radio.addEventListener('change', () => { reportSubmit.disabled = false; });
+    });
+
+    // Highlight selected reason row
+    document.querySelectorAll('.report-reason').forEach(row => {
+      row.addEventListener('click', () => {
+        document.querySelectorAll('.report-reason').forEach(r => r.classList.remove('selected'));
+        row.classList.add('selected');
+      });
+    });
+
+    reportSubmit.addEventListener('click', async () => {
+      const reason    = document.querySelector('input[name="report-reason"]:checked')?.value;
+      const details   = document.getElementById('report-details').value.trim();
+      const endNow    = document.getElementById('report-end-session').checked;
+      if (!reason) return;
+
+      reportSubmit.disabled     = true;
+      reportSubmit.textContent  = 'Submitting…';
+
+      const res = await fetch(`/api/matches/${matchId}/report`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason, details, endSession: endNow }),
+      }).catch(() => null);
+
+      reportModal.classList.remove('open');
+
+      if (endNow || res?.ok && (await res.clone().json())?.sessionEnded) {
+        stopPolling();
+        window.location.href = '/dashboard';
+      }
+    });
+  </script>
+</body>
+</html>

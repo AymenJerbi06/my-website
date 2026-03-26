@@ -1,0 +1,7 @@
+node_modules/
+.env
+*.log
+.DS_Store
+supportly.db
+supportly.db-wal
+supportly.db-shm

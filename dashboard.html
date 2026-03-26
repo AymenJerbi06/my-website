@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supportly — Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="dash-body">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="dash-header">
+    <a href="/dashboard" class="brand">
+      <img src="Logo.2.png" alt="Supportly" class="nav-logo" />
+    </a>
+    <div class="dash-header-right">
+      <span class="dash-greeting" id="dash-greeting">Welcome back</span>
+      <button class="btn-ghost small" id="btn-logout">Log out</button>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="dash-main">
+
+    <!-- Greeting -->
+    <div class="dash-intro reveal">
+      <h1>Ready when you are.</h1>
+      <p>Choose your role for today's session. You can change this any time.</p>
+    </div>
+
+    <!-- Role selection -->
+    <div class="role-select">
+      <button class="role-btn sharer-btn reveal" style="--delay:0.05s" data-role="sharer">
+        <div class="role-btn-icon sharer-icon">
+          <i data-lucide="message-circle"></i>
+        </div>
+        <div class="role-btn-text">
+          <h2>I need to talk</h2>
+          <p>Share what's on your mind with a caring, anonymous listener.</p>
+        </div>
+        <div class="role-btn-arrow"><i data-lucide="arrow-right"></i></div>
+      </button>
+
+      <button class="role-btn listener-btn reveal" style="--delay:0.12s" data-role="listener">
+        <div class="role-btn-icon listener-icon">
+          <i data-lucide="headphones"></i>
+        </div>
+        <div class="role-btn-text">
+          <h2>I want to listen</h2>
+          <p>Be there for someone who needs support today.</p>
+        </div>
+        <div class="role-btn-arrow"><i data-lucide="arrow-right"></i></div>
+      </button>
+    </div>
+
+    <!-- Format preference -->
+    <div class="format-section reveal" style="--delay:0.2s">
+      <p class="format-label">Preferred format</p>
+      <div class="format-options">
+        <button class="format-btn active" data-format="text">
+          <i data-lucide="message-square"></i>
+          Text Chat
+        </button>
+        <button class="format-btn" data-format="video">
+          <i data-lucide="video"></i>
+          Video Call
+        </button>
+        <button class="format-btn" data-format="either">
+          <i data-lucide="shuffle"></i>
+          Either
+        </button>
+      </div>
+    </div>
+
+    <!-- Safety reminder -->
+    <div class="safety-banner reveal" style="--delay:0.28s">
+      <i data-lucide="shield-check" class="safety-icon"></i>
+      <p>
+        <strong>Community guidelines:</strong>
+        Be kind and patient. Never share personal contact info.
+        You can leave any session at any time — no explanation needed.
+        If you're in crisis, please contact a professional helpline.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- ═══ MATCHING OVERLAY ═══ -->
+  <div class="matching-overlay" id="matching-overlay">
+    <div class="matching-card">
+      <img src="Logo.2.png" alt="Supportly" class="matching-logo" />
+      <div class="matching-spinner">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <h2 id="matching-title">Finding someone for you...</h2>
+      <p id="matching-sub">Looking for an available <span id="matching-role">listener</span> right now.</p>
+      <button class="btn-ghost small" id="btn-cancel-match">Cancel</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

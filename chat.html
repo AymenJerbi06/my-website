@@ -335,10 +335,15 @@
     const typingLabel     = document.getElementById('typing-label');
 
     function setTypingIndicator(visible) {
-      typingIndicator.style.display = visible ? 'flex' : 'none';
-      if (visible) requestAnimationFrame(() =>
-        msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' })
-      );
+      if (visible) {
+        inner.appendChild(typingIndicator); // always keep it last
+        typingIndicator.style.display = 'flex';
+        requestAnimationFrame(() =>
+          msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' })
+        );
+      } else {
+        typingIndicator.style.display = 'none';
+      }
     }
 
     async function pollTyping() {

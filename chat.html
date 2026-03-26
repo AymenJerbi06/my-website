@@ -282,7 +282,9 @@
         const msgs = await fetch(`/api/matches/${matchId}/messages`).then(r => r.json());
         let added = false;
         msgs.forEach(m => { if (m.id > lastMsgId) { renderMsg(m); added = true; } });
-        if (added) scrollToBottom();
+        if (added) requestAnimationFrame(() =>
+          msgArea.scrollTo({ top: msgArea.scrollHeight, behavior: 'smooth' })
+        );
 
         // Check for remote session end
         if (status === 'active') {

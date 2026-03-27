@@ -257,6 +257,7 @@
       // Restore mic/cam states from prejoin lobby
       const prejoin = JSON.parse(sessionStorage.getItem('prejoin') || '{"micOn":true,"camOn":true}');
       sessionStorage.removeItem('prejoin');
+      sessionStorage.removeItem('navigatingToSession');
       micOn = prejoin.micOn;
       camOn = prejoin.camOn;
 
@@ -375,6 +376,8 @@
 
     socket.on('peer-disconnected', () => {
       dbg('peer-disconnected');
+      // Reset PC so it is recreated clean when the peer rejoins.
+      pc?.close(); pc = null; offerSent = false; remoteDescSet = false; iceCandidateBuffer = [];
       connectingText.textContent = 'Your partner lost connection — waiting to reconnect…';
       document.getElementById('btn-leave-connecting').textContent = 'Leave session';
       setPhase('connecting');
@@ -386,7 +389,12 @@
       document.querySelector('#state-ended p').textContent  = 'The session has ended. Redirecting you to the dashboard…';
       endSession(false);
     });
-    socket.on('error', ({ message }) => console.warn('Signaling:', message));
+    socket.on('error', ({ message }) => {
+      console.warn('Signaling error:', message);
+      // Show the failure card so the user can retry or switch to text.
+      connectingText.textContent = 'Could not join this session.';
+      document.getElementById('connect-failed-card').style.display = 'block';
+    });
 
     // ── RTCPeerConnection ──────────────────────────────────────
     function createPC() {

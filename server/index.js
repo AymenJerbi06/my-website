@@ -73,6 +73,16 @@ app.get('/api/turn-config', requireAuth, (req, res) => {
       { urls: `turn:${turnUrl}:443`,              username: turnUsername, credential: turnCred },
       { urls: `turn:${turnUrl}:443?transport=tcp`, username: turnUsername, credential: turnCred },
     );
+  } else {
+    // Fallback to public demo TURN so connections work without custom TURN config.
+    // These are rate-limited shared credentials — set TURN_URL/USERNAME/CREDENTIAL env vars
+    // for a production TURN server (e.g. Metered, Twilio, or self-hosted Coturn).
+    iceServers.push(
+      { urls: 'stun:openrelay.metered.ca:80' },
+      { urls: 'turn:openrelay.metered.ca:80',                username: 'openrelayproject', credential: 'openrelayproject' },
+      { urls: 'turn:openrelay.metered.ca:443',               username: 'openrelayproject', credential: 'openrelayproject' },
+      { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
+    );
   }
 
   res.json({ iceServers });

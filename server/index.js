@@ -57,6 +57,27 @@ app.use('/api/user',             requireAuth, userRoutes);
 app.use('/api/queue',            requireAuth, queueRoutes);
 app.use('/api/matches/:matchId', requireAuth, matchRoutes);
 
+// ── TURN config — served server-side so credentials stay out of HTML ──
+app.get('/api/turn-config', requireAuth, (req, res) => {
+  const iceServers = [
+    { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] },
+  ];
+
+  const turnUrl      = process.env.TURN_URL;
+  const turnUsername = process.env.TURN_USERNAME;
+  const turnCred     = process.env.TURN_CREDENTIAL;
+
+  if (turnUrl && turnUsername && turnCred) {
+    iceServers.push(
+      { urls: `turn:${turnUrl}:80`,               username: turnUsername, credential: turnCred },
+      { urls: `turn:${turnUrl}:443`,              username: turnUsername, credential: turnCred },
+      { urls: `turn:${turnUrl}:443?transport=tcp`, username: turnUsername, credential: turnCred },
+    );
+  }
+
+  res.json({ iceServers });
+});
+
 app.get('/dashboard',           requireAuth, (req, res) => res.sendFile(path.join(__dirname, '../dashboard.html')));
 app.get('/chat/:matchId',       requireAuth, (req, res) => res.sendFile(path.join(__dirname, '../chat.html')));
 app.get('/video/:matchId/prejoin', requireAuth, (req, res) => res.sendFile(path.join(__dirname, '../video-prejoin.html')));

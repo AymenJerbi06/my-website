@@ -186,16 +186,8 @@
     // ── Debug logger ──────────────────────────────────────────
     function dbg(...args) { console.log('[WebRTC]', ...args); }
 
-    // ── Config ────────────────────────────────────────────────
-    const ICE_CONFIG = {
-      iceServers: [
-        { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
-        // TURN relay — required for users behind symmetric NATs (mobile, corporate networks)
-        { urls: 'turn:openrelay.metered.ca:80',   username: 'openrelayproject', credential: 'openrelayproject' },
-        { urls: 'turn:openrelay.metered.ca:443',  username: 'openrelayproject', credential: 'openrelayproject' },
-        { urls: 'turn:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
-      ]
-    };
+    // ── Config (fetched from server so credentials stay out of HTML) ──
+    let ICE_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }] };
 
     // ── State ─────────────────────────────────────────────────
     const matchId          = parseInt(window.location.pathname.split('/')[2], 10);
@@ -289,6 +281,14 @@
         setCamIcon(camOn);
         localPip.style.display = 'block';
       }
+
+      // Fetch ICE/TURN config from server
+      const turnRes = await fetch('/api/turn-config').catch(() => null);
+      if (turnRes?.ok) {
+        const turnData = await turnRes.json().catch(() => null);
+        if (turnData?.iceServers) ICE_CONFIG = turnData;
+      }
+      dbg('ICE config loaded, servers:', ICE_CONFIG.iceServers.map(s => s.urls));
 
       dbg('Joining room matchId:', matchId);
       socket.emit('join-room', { matchId });

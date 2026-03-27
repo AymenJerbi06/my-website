@@ -111,6 +111,20 @@ router.post('/messages', async (req, res) => {
   });
 });
 
+// ── POST /api/matches/:matchId/switch-mode ────────────────
+router.post('/switch-mode', async (req, res) => {
+  const match = await loadMatch(req, res);
+  if (!match) return;
+
+  if (match.status !== 'active') {
+    return res.status(400).json({ success: false, message: 'Session is not active.' });
+  }
+
+  const newMode = match.mode === 'video' ? 'text' : 'video';
+  await run('UPDATE matches SET mode=$1 WHERE id=$2', [newMode, match.id]);
+  return res.json({ success: true, mode: newMode });
+});
+
 // ── POST /api/matches/:matchId/leave ──────────────────────
 router.post('/leave', async (req, res) => {
   const match = await loadMatch(req, res);

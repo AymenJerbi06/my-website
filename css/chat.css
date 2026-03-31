@@ -10,7 +10,7 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background: #F5F2FF;
+  background: #F8F4FF;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -22,9 +22,9 @@
   align-items: center;
   padding: 0 20px;
   height: 62px;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(167,139,250,0.14);
+  background: rgba(254,251,255,0.94);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(175,148,255,0.16);
   z-index: 50;
 }
 
@@ -178,11 +178,11 @@
   box-shadow: 0 2px 10px rgba(124,58,237,0.22);
 }
 .msg-row.theirs .msg-bubble {
-  background: #fff;
+  background: #fffcff;
   color: #150A35;
-  border: 1px solid #e8e2f5;
+  border: 1px solid #e4dcf8;
   border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 6px rgba(140,80,220,0.07);
 }
 /* Slightly rounded on consecutive same-sender bubbles */
 .msg-row.mine   .msg-bubble.continued { border-bottom-right-radius: 18px; }
@@ -326,8 +326,8 @@
 /* ── Composer ─────────────────────────────────────────────── */
 .chat-composer {
   flex-shrink: 0;
-  background: #fff;
-  border-top: 1px solid #e8e2f5;
+  background: #fffcff;
+  border-top: 1px solid #e4dcf8;
   padding: 12px 20px;
 }
 
@@ -337,7 +337,7 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  background: #f5f2ff;
+  background: #f8f4ff;
   border: 1.5px solid #ddd6fe;
   border-radius: 22px;
   padding: 8px 8px 8px 16px;
@@ -345,7 +345,7 @@
 }
 .composer-inner:focus-within {
   border-color: #7C3AED;
-  background: #fff;
+  background: #fffcff;
 }
 
 .composer-inner textarea {
@@ -436,12 +436,12 @@
 .modal-overlay.open { display: flex; }
 
 .modal-card {
-  background: #fff;
+  background: #fffcff;
   border-radius: 20px;
   padding: 32px 28px;
   max-width: 420px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(21,10,53,0.2);
+  box-shadow: 0 24px 70px rgba(21,10,53,0.22), 0 4px 20px rgba(140,80,220,0.10);
 }
 .modal-card h2 {
   font-size: 19px;
@@ -471,9 +471,9 @@
   color: #150A35;
   font-weight: 600;
 }
-.report-reason:hover { border-color: #a78bfa; background: #faf8ff; }
+.report-reason:hover { border-color: #a78bfa; background: #fdf9ff; }
 .report-reason input[type="radio"] { accent-color: #7C3AED; }
-.report-reason.selected { border-color: #7C3AED; background: #f5f0ff; }
+.report-reason.selected { border-color: #7C3AED; background: #f8f3ff; }
 
 .report-details {
   width: 100%;

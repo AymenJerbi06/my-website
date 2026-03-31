@@ -3,126 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supportly — Dashboard</title>
-  <link rel="icon" type="image/png" href="/Logo.2.png?v=2">
+  <title>Supportly - Dashboard</title>
+  <link rel="icon" type="image/png" href="/Logo.2.png?v=2" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body class="dash-body">
+  <div class="dash-orb dash-orb-one"></div>
+  <div class="dash-orb dash-orb-two"></div>
 
-  <!-- ═══ HEADER ═══ -->
   <header class="dash-header">
     <a href="/dashboard" class="brand">
       <img src="Logo.2.png" alt="Supportly" class="nav-logo" />
+      <div class="brand-copy">
+        <span class="brand-name">Supportly</span>
+        <span class="brand-tag">Your quiet starting point</span>
+      </div>
     </a>
+
     <div class="dash-header-right">
       <span class="dash-greeting" id="dash-greeting">Welcome back</span>
       <button class="btn-ghost small" id="btn-logout">Log out</button>
     </div>
   </header>
 
-  <!-- ═══ MAIN ═══ -->
   <main class="dash-main">
+    <section class="dash-hero reveal">
+      <div class="dash-intro">
+        <span class="dash-eyebrow">A calmer way to begin</span>
+        <h1>Set the tone before you step into a conversation.</h1>
+        <p>
+          This space is meant to feel gentle and in control. Choose how you want to show up,
+          pick the format that feels safest, and start only when you are ready.
+        </p>
+      </div>
 
-    <!-- Greeting -->
-    <div class="dash-intro reveal">
-      <h1>Ready when you are.</h1>
-      <p>Choose your role for today's session. You can change this any time.</p>
-    </div>
+      <aside class="dash-hero-card reveal" style="--delay:0.08s">
+        <span class="card-kicker">What to expect</span>
+        <h2>One person. One room. No pressure.</h2>
+        <ul class="expect-list">
+          <li>Private matching between a sharer and a listener</li>
+          <li>Text or video based on what feels right today</li>
+          <li>Clear controls to leave or report at any time</li>
+        </ul>
+      </aside>
+    </section>
 
-    <!-- Username card -->
-    <div class="username-card reveal" style="--delay:0.06s" id="username-card">
-      <!-- View mode -->
-      <div class="username-view" id="username-view">
-        <div class="username-avatar" id="username-avatar">?</div>
-        <div class="username-info">
-          <div class="username-label">Your display name</div>
-          <div class="username-value" id="username-display">Not set</div>
+    <section class="dash-grid">
+      <div class="username-card reveal" style="--delay:0.04s" id="username-card">
+        <div class="username-view" id="username-view">
+          <div class="username-avatar" id="username-avatar">?</div>
+          <div class="username-info">
+            <div class="username-label">Your display name</div>
+            <div class="username-value" id="username-display">Not set</div>
+          </div>
+          <button class="username-edit-trigger" id="btn-edit-username">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit
+          </button>
         </div>
-        <button class="username-edit-trigger" id="btn-edit-username">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-          </svg>
-          Edit
+
+        <div class="username-edit" id="username-edit" style="display:none">
+          <div class="username-input-wrap">
+            <span class="username-at-prefix">@</span>
+            <input type="text" id="username-input" placeholder="your_username"
+                   maxlength="30" autocomplete="off" spellcheck="false" />
+          </div>
+          <p class="username-hint">3-30 characters, letters, numbers, and underscores only.</p>
+          <p class="username-error" id="username-error"></p>
+          <div class="username-actions">
+            <button class="username-cancel-btn" id="btn-cancel-username">Cancel</button>
+            <button class="username-save-btn" id="btn-save-username">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="comfort-card reveal" style="--delay:0.12s">
+        <span class="card-kicker">A good reminder</span>
+        <h2>You do not need to have the perfect words.</h2>
+        <p>
+          Whether you are here to share or listen, the goal is not performance. It is presence.
+          You can move slowly, change your mind, or leave whenever you need to.
+        </p>
+      </div>
+    </section>
+
+    <section class="selection-block reveal" style="--delay:0.16s">
+      <div class="section-copy">
+        <span class="dash-eyebrow">Choose your role</span>
+        <h2>How would you like to show up today?</h2>
+      </div>
+
+      <div class="role-select">
+        <button class="role-btn sharer-btn" data-role="sharer">
+          <div class="role-btn-icon sharer-icon">
+            <i data-lucide="message-circle"></i>
+          </div>
+          <div class="role-btn-text">
+            <h3>I need to talk</h3>
+            <p>Enter as a sharer and meet someone who is ready to listen with care.</p>
+          </div>
+          <div class="role-btn-arrow">
+            <i data-lucide="arrow-right"></i>
+          </div>
+        </button>
+
+        <button class="role-btn listener-btn" data-role="listener">
+          <div class="role-btn-icon listener-icon">
+            <i data-lucide="headphones"></i>
+          </div>
+          <div class="role-btn-text">
+            <h3>I want to listen</h3>
+            <p>Enter as a listener and offer steady attention to someone who needs it.</p>
+          </div>
+          <div class="role-btn-arrow">
+            <i data-lucide="arrow-right"></i>
+          </div>
         </button>
       </div>
-      <!-- Edit mode -->
-      <div class="username-edit" id="username-edit" style="display:none">
-        <div class="username-input-wrap">
-          <span class="username-at-prefix">@</span>
-          <input type="text" id="username-input" placeholder="your_username"
-                 maxlength="30" autocomplete="off" spellcheck="false" />
-        </div>
-        <p class="username-hint">3–30 characters · letters, numbers, underscores</p>
-        <p class="username-error" id="username-error"></p>
-        <div class="username-actions">
-          <button class="username-cancel-btn" id="btn-cancel-username">Cancel</button>
-          <button class="username-save-btn" id="btn-save-username">Save</button>
+    </section>
+
+    <section class="preferences-card reveal" style="--delay:0.22s">
+      <div class="preferences-copy">
+        <span class="dash-eyebrow">Preferred format</span>
+        <h2>Choose what feels most comfortable.</h2>
+      </div>
+
+      <div class="format-section">
+        <div class="format-options">
+          <button class="format-btn active" data-format="text">
+            <i data-lucide="message-square"></i>
+            Text chat
+          </button>
+          <button class="format-btn" data-format="video">
+            <i data-lucide="video"></i>
+            Video call
+          </button>
+          <button class="format-btn" data-format="either">
+            <i data-lucide="shuffle"></i>
+            Either
+          </button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Role selection -->
-    <div class="role-select">
-      <button class="role-btn sharer-btn reveal" style="--delay:0.05s" data-role="sharer">
-        <div class="role-btn-icon sharer-icon">
-          <i data-lucide="message-circle"></i>
-        </div>
-        <div class="role-btn-text">
-          <h2>I need to talk</h2>
-          <p>Share what's on your mind with a caring, anonymous listener.</p>
-        </div>
-        <div class="role-btn-arrow"><i data-lucide="arrow-right"></i></div>
-      </button>
-
-      <button class="role-btn listener-btn reveal" style="--delay:0.12s" data-role="listener">
-        <div class="role-btn-icon listener-icon">
-          <i data-lucide="headphones"></i>
-        </div>
-        <div class="role-btn-text">
-          <h2>I want to listen</h2>
-          <p>Be there for someone who needs support today.</p>
-        </div>
-        <div class="role-btn-arrow"><i data-lucide="arrow-right"></i></div>
-      </button>
-    </div>
-
-    <!-- Format preference -->
-    <div class="format-section reveal" style="--delay:0.2s">
-      <p class="format-label">Preferred format</p>
-      <div class="format-options">
-        <button class="format-btn active" data-format="text">
-          <i data-lucide="message-square"></i>
-          Text Chat
-        </button>
-        <button class="format-btn" data-format="video">
-          <i data-lucide="video"></i>
-          Video Call
-        </button>
-        <button class="format-btn" data-format="either">
-          <i data-lucide="shuffle"></i>
-          Either
-        </button>
+    <section class="safety-banner reveal" style="--delay:0.28s">
+      <div class="safety-icon-wrap">
+        <i data-lucide="shield"></i>
       </div>
-    </div>
-
-    <!-- Safety reminder -->
-    <div class="safety-banner reveal" style="--delay:0.28s">
-      <i data-lucide="shield-check" class="safety-icon"></i>
-      <p>
-        <strong>Community guidelines:</strong>
-        Be kind and patient. Never share personal contact info.
-        You can leave any session at any time — no explanation needed.
-        If you're in crisis, please contact a professional helpline.
-      </p>
-    </div>
-
+      <div>
+        <strong>Community care matters here.</strong>
+        <p>
+          Be kind. Protect your privacy. Do not share personal contact details.
+          If a session ever feels wrong, you can leave or report it immediately.
+          If you are in crisis, please contact local emergency or professional support services.
+        </p>
+      </div>
+    </section>
   </main>
 
-  <!-- ═══ MATCHING OVERLAY ═══ -->
+  <div class="dash-toast" id="dash-toast" aria-live="polite"></div>
+
   <div class="matching-overlay" id="matching-overlay">
     <div class="matching-card">
       <img src="Logo.2.png" alt="Supportly" class="matching-logo" />
@@ -134,9 +183,9 @@
           <span></span><span></span><span></span><span></span>
         </div>
       </div>
-      <h2 id="matching-title">Finding someone for you...</h2>
-      <p id="matching-sub">Looking for an available <span id="matching-role">listener</span> right now.</p>
-      <button class="btn-ghost small" id="btn-cancel-match">Cancel</button>
+      <h2 id="matching-title">Finding a calm room for you...</h2>
+      <p id="matching-sub">We are looking for the right person and will bring you in as soon as the room is ready.</p>
+      <button class="btn-ghost small" id="btn-cancel-match">Cancel search</button>
     </div>
   </div>
 

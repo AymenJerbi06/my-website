@@ -3,282 +3,283 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supportly — Get ready</title>
-  <link rel="icon" type="image/png" href="/Logo.2.png?v=2">
+  <title>Supportly - Get Ready</title>
+  <link rel="icon" type="image/png" href="/Logo.2.png?v=2" />
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/video.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body class="video-body prejoin-body">
+  <div class="video-ambient ambient-one"></div>
+  <div class="video-ambient ambient-two"></div>
 
-  <!-- Header -->
-  <header class="dash-header" style="background:rgba(15,10,36,0.85);border-bottom:1px solid rgba(255,255,255,0.07);">
+  <header class="session-header">
     <a href="/dashboard" class="brand">
-      <img src="/Logo.2.png" alt="Supportly" class="nav-logo" style="filter:brightness(10)" />
+      <img src="/Logo.2.png" alt="Supportly" class="nav-logo" />
+      <div class="brand-copy">
+        <span class="brand-name">Supportly</span>
+        <span class="brand-tag">Private video room</span>
+      </div>
     </a>
-    <div class="dash-header-right">
-      <span style="font-size:13px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);
-                   border:1.5px solid rgba(167,139,250,0.25);border-radius:50px;padding:5px 14px;">
-        Video Session
-      </span>
-      <a href="/dashboard" class="btn-ghost small"
-         style="color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.12);"
-         id="btn-cancel">Cancel</a>
+
+    <div class="session-header-actions">
+      <span class="session-chip">Video session</span>
+      <a href="/dashboard" class="btn-ghost small video-header-btn" id="btn-cancel">Cancel</a>
     </div>
   </header>
 
-  <!-- ═══ LOBBY STATES ═══ -->
+  <main class="prejoin-stage">
+    <section class="prejoin-wrap" id="state-check">
+      <div class="prejoin-card">
+        <div class="prejoin-copy">
+          <span class="prejoin-eyebrow">Before you enter</span>
+          <h1>Settle in and make sure everything feels comfortable.</h1>
+          <p>
+            Your preview stays local to this screen until you join. Take a moment to check your
+            camera and microphone, then step in when you are ready.
+          </p>
 
-  <!-- State 1: Camera check (default) -->
-  <div class="prejoin-wrap" id="state-check">
-    <div class="prejoin-header">
-      <h1>Get ready</h1>
-      <p>Check your camera and microphone before joining the session.</p>
-    </div>
+          <div class="prejoin-points">
+            <div class="prejoin-point">
+              <strong>Private first</strong>
+              <span>No live connection starts until you join the room.</span>
+            </div>
+            <div class="prejoin-point">
+              <strong>Stay in control</strong>
+              <span>Mute or turn off your camera before entering if that feels better.</span>
+            </div>
+            <div class="prejoin-point">
+              <strong>Leave any time</strong>
+              <span>You can go back or leave the waiting room whenever you need to.</span>
+            </div>
+          </div>
+        </div>
 
-    <div class="preview-card" id="preview-card">
-      <video id="preview-video" autoplay muted playsinline></video>
-      <div class="preview-placeholder" id="preview-placeholder">
-        <div class="preview-icon">📷</div>
-        <span id="placeholder-text">Requesting camera access…</span>
+        <div class="prejoin-panel">
+          <div class="preview-card" id="preview-card">
+            <video id="preview-video" autoplay muted playsinline></video>
+            <div class="preview-placeholder" id="preview-placeholder">
+              <div class="preview-icon">Cam</div>
+              <span id="placeholder-text">Requesting camera access...</span>
+            </div>
+            <div class="camera-off-overlay" id="camera-off-overlay" style="display:none">Camera off</div>
+            <div class="preview-overlay-label">You</div>
+          </div>
+
+          <div class="device-status">
+            <div class="device-item" id="cam-status">
+              <span class="device-dot"></span> Camera
+            </div>
+            <div class="device-item" id="mic-status">
+              <span class="device-dot"></span> Microphone
+            </div>
+          </div>
+
+          <div class="preview-controls">
+            <button class="ctrl-btn" id="btn-mic" title="Toggle microphone">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+            <button class="ctrl-btn" id="btn-cam" title="Toggle camera">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
+            </button>
+          </div>
+
+          <div id="permission-error" class="permission-card">
+            <div class="permission-icon">No access</div>
+            <div class="permission-title">Camera or microphone access was denied</div>
+            <div class="permission-copy">
+              Open your browser settings, allow access for this site, and refresh the page.
+            </div>
+          </div>
+
+          <button class="join-btn" id="btn-join" disabled>Join session</button>
+          <p class="prejoin-note">You can still leave from here. Nothing begins until you choose to enter.</p>
+        </div>
       </div>
-      <div class="camera-off-overlay" id="camera-off-overlay" style="display:none">👤</div>
-      <div class="preview-overlay-label">You</div>
-    </div>
+    </section>
 
-    <div class="device-status">
-      <div class="device-item" id="cam-status">
-        <span class="device-dot"></span> Camera
+    <section class="prejoin-wrap waiting-wrap" id="state-waiting" style="display:none">
+      <div class="waiting-card">
+        <div class="video-waiting-spinner"></div>
+        <span class="prejoin-eyebrow">Waiting room</span>
+        <h1>Waiting for your partner...</h1>
+        <p id="waiting-sub">They are still finishing their camera check. Hang tight for a moment.</p>
+
+        <div id="waiting-timeout-card" class="waiting-timeout-card">
+          They are taking a little longer than usual. You can keep waiting, or step away and try again later.
+        </div>
+
+        <div class="waiting-actions">
+          <button class="join-btn subtle" id="btn-go-back">Go back and re-check</button>
+          <button class="danger-ghost" id="btn-leave-waiting">Leave waiting room</button>
+        </div>
       </div>
-      <div class="device-item" id="mic-status">
-        <span class="device-dot"></span> Microphone
-      </div>
-    </div>
-
-    <div class="preview-controls">
-      <button class="ctrl-btn" id="btn-mic" title="Toggle microphone">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-          <line x1="12" y1="19" x2="12" y2="23"></line>
-          <line x1="8" y1="23" x2="16" y2="23"></line>
-        </svg>
-      </button>
-      <button class="ctrl-btn" id="btn-cam" title="Toggle camera">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="23 7 16 12 23 17 23 7"></polygon>
-          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Permission denied error card -->
-    <div id="permission-error" style="
-      display:none;background:rgba(239,68,68,0.1);border:1.5px solid rgba(239,68,68,0.3);
-      border-radius:14px;padding:16px 20px;max-width:380px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:8px">🚫</div>
-      <div style="font-size:14px;font-weight:700;color:#fca5a5;margin-bottom:6px">
-        Camera or microphone access denied
-      </div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6">
-        Open your browser settings and allow access for this site,<br />then refresh the page.
-      </div>
-    </div>
-
-    <button class="join-btn" id="btn-join" disabled>Join Session</button>
-
-    <p style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;max-width:300px">
-      Your partner is waiting. Clicking Join will connect you to the live call.
-    </p>
-  </div>
-
-  <!-- State 2: Waiting for partner to be ready -->
-  <div class="prejoin-wrap" id="state-waiting" style="display:none">
-    <div class="video-waiting-spinner" style="width:52px;height:52px;border-width:3px"></div>
-    <div class="prejoin-header">
-      <h1>Waiting for your partner…</h1>
-      <p id="waiting-sub">Your partner is still finishing their camera check.</p>
-    </div>
-
-    <!-- Timeout fallback card (hidden until 2 min elapsed) -->
-    <div id="waiting-timeout-card" style="
-      display:none;background:rgba(167,139,250,0.08);border:1.5px solid rgba(167,139,250,0.2);
-      border-radius:14px;padding:16px 20px;max-width:340px;text-align:center;">
-      <div style="font-size:13px;font-weight:700;color:#a78bfa;margin-bottom:4px;">Still waiting…</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6">
-        Your partner is taking a while. You can keep waiting or leave and try again later.
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:260px">
-      <button class="join-btn" style="width:100%" id="btn-go-back">Go back &amp; re-check</button>
-      <button id="btn-leave-waiting" style="
-        width:100%;background:transparent;border:1.5px solid rgba(239,68,68,0.35);
-        border-radius:50px;padding:11px 0;font-size:14px;font-weight:700;
-        color:#f87171;font-family:'Nunito',sans-serif;cursor:pointer;
-        transition:background 0.15s,border-color 0.15s;">
-        Leave waiting room
-      </button>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script>
-    const matchId   = window.location.pathname.split('/')[2];
+    const matchId = window.location.pathname.split("/")[2];
     let localStream = null;
-    let micOn       = true;
-    let camOn       = true;
-    let readyPollTimer    = null;
+    let micOn = true;
+    let camOn = true;
+    let readyPollTimer = null;
     let waitingTimeoutTimer = null;
 
-    const previewVideo    = document.getElementById('preview-video');
-    const placeholder     = document.getElementById('preview-placeholder');
-    const placeholderText = document.getElementById('placeholder-text');
-    const camOffOverlay   = document.getElementById('camera-off-overlay');
-    const camStatus       = document.getElementById('cam-status');
-    const micStatus       = document.getElementById('mic-status');
-    const micBtn          = document.getElementById('btn-mic');
-    const camBtn          = document.getElementById('btn-cam');
-    const joinBtn         = document.getElementById('btn-join');
-    const permError       = document.getElementById('permission-error');
-    const stateCheck      = document.getElementById('state-check');
-    const stateWaiting    = document.getElementById('state-waiting');
-    const waitingSub      = document.getElementById('waiting-sub');
+    const previewVideo = document.getElementById("preview-video");
+    const placeholder = document.getElementById("preview-placeholder");
+    const placeholderText = document.getElementById("placeholder-text");
+    const camOffOverlay = document.getElementById("camera-off-overlay");
+    const camStatus = document.getElementById("cam-status");
+    const micStatus = document.getElementById("mic-status");
+    const micBtn = document.getElementById("btn-mic");
+    const camBtn = document.getElementById("btn-cam");
+    const joinBtn = document.getElementById("btn-join");
+    const permError = document.getElementById("permission-error");
+    const stateCheck = document.getElementById("state-check");
+    const stateWaiting = document.getElementById("state-waiting");
+    const waitingSub = document.getElementById("waiting-sub");
 
-    // ── Init ─────────────────────────────────────────────────
     (async () => {
-      const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => null);
-      if (!me?.authenticated) { window.location.href = '/'; return; }
-
-      const res   = await fetch(`/api/matches/${matchId}`);
-      const match = await res.json();
-      if (!res.ok || match.mode !== 'video' || match.status !== 'active') {
-        window.location.href = '/dashboard';
+      const me = await fetch("/api/auth/me").then((r) => r.json()).catch(() => null);
+      if (!me?.authenticated) {
+        window.location.href = "/";
         return;
       }
 
-      // Un-mark any previous readiness (page reload = not ready again)
-      await fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE' }).catch(() => {});
+      const res = await fetch(`/api/matches/${matchId}`);
+      const match = await res.json();
+      if (!res.ok || match.mode !== "video" || match.status !== "active") {
+        window.location.href = "/dashboard";
+        return;
+      }
 
-      // Request camera + mic
+      await fetch(`/api/matches/${matchId}/ready`, { method: "DELETE" }).catch(() => {});
+
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         previewVideo.srcObject = localStream;
-        placeholder.style.display  = 'none';
-        camStatus.className = 'device-item ok';
-        micStatus.className = 'device-item ok';
-        joinBtn.disabled    = false;
+        placeholder.style.display = "none";
+        camStatus.className = "device-item ok";
+        micStatus.className = "device-item ok";
+        joinBtn.disabled = false;
       } catch (err) {
-        placeholder.style.display  = 'flex';
-        placeholderText.textContent = '';
-        permError.style.display = 'block';
-        camStatus.className = 'device-item error';
-        micStatus.className = 'device-item error';
+        placeholder.style.display = "flex";
+        placeholderText.textContent = "Camera and microphone access is needed before you can join.";
+        permError.style.display = "block";
+        camStatus.className = "device-item error";
+        micStatus.className = "device-item error";
       }
     })();
 
-    // ── Controls ──────────────────────────────────────────────
     function setMicIcon(on) {
-      micBtn.classList.toggle('off', !on);
+      micBtn.classList.toggle("off", !on);
       micBtn.innerHTML = on
         ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-             <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+             <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+             <line x1="12" y1="19" x2="12" y2="23"></line>
+             <line x1="8" y1="23" x2="16" y2="23"></line>
            </svg>`
         : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-             <line x1="1" y1="1" x2="23" y2="23"/>
-             <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/>
-             <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/>
-             <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <line x1="1" y1="1" x2="23" y2="23"></line>
+             <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+             <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+             <line x1="12" y1="19" x2="12" y2="23"></line>
+             <line x1="8" y1="23" x2="16" y2="23"></line>
            </svg>`;
     }
 
     function setCamIcon(on) {
-      camBtn.classList.toggle('off', !on);
+      camBtn.classList.toggle("off", !on);
       camBtn.innerHTML = on
         ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-             <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <polygon points="23 7 16 12 23 17 23 7"></polygon>
+             <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
            </svg>`
         : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-             <line x1="1" y1="1" x2="23" y2="23"/>
-             <path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34m-7.72-2.06A3 3 0 0 1 15 15H9a3 3 0 0 1-3-3V9"/>
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <line x1="1" y1="1" x2="23" y2="23"></line>
+             <path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34m-7.72-2.06A3 3 0 0 1 15 15H9a3 3 0 0 1-3-3V9"></path>
            </svg>`;
     }
 
-    micBtn.addEventListener('click', () => {
+    micBtn.addEventListener("click", () => {
       if (!localStream) return;
       micOn = !micOn;
-      localStream.getAudioTracks().forEach(t => t.enabled = micOn);
+      localStream.getAudioTracks().forEach((track) => { track.enabled = micOn; });
       setMicIcon(micOn);
     });
 
-    camBtn.addEventListener('click', () => {
+    camBtn.addEventListener("click", () => {
       if (!localStream) return;
       camOn = !camOn;
-      localStream.getVideoTracks().forEach(t => t.enabled = camOn);
+      localStream.getVideoTracks().forEach((track) => { track.enabled = camOn; });
       setCamIcon(camOn);
-      camOffOverlay.style.display = camOn ? 'none' : 'flex';
+      camOffOverlay.style.display = camOn ? "none" : "flex";
     });
 
-    // ── Join flow ─────────────────────────────────────────────
-    joinBtn.addEventListener('click', async () => {
-      joinBtn.disabled     = true;
-      joinBtn.textContent  = 'Joining…';
+    joinBtn.addEventListener("click", async () => {
+      joinBtn.disabled = true;
+      joinBtn.textContent = "Joining...";
 
-      // Mark this user as ready
-      const res  = await fetch(`/api/matches/${matchId}/ready`, { method: 'POST' }).then(r => r.json());
+      const res = await fetch(`/api/matches/${matchId}/ready`, { method: "POST" }).then((r) => r.json());
 
-      // Stop local preview (video.html re-acquires)
-      sessionStorage.setItem('prejoin', JSON.stringify({ micOn, camOn }));
-      localStream?.getTracks().forEach(t => t.stop());
+      sessionStorage.setItem("prejoin", JSON.stringify({ micOn, camOn }));
+      localStream?.getTracks().forEach((track) => track.stop());
 
       if (res.bothReady) {
-        // Partner is also ready — go straight in
-        sessionStorage.setItem('navigatingToSession', '1');
+        sessionStorage.setItem("navigatingToSession", "1");
         window.location.href = `/video/${matchId}`;
       } else {
-        // Wait for partner
-        stateCheck.style.display   = 'none';
-        stateWaiting.style.display = 'flex';
+        stateCheck.style.display = "none";
+        stateWaiting.style.display = "flex";
         startReadyPoll();
-        // Show "still waiting" card after 2 minutes
         waitingTimeoutTimer = setTimeout(() => {
-          document.getElementById('waiting-timeout-card').style.display = 'block';
-        }, 120_000);
+          document.getElementById("waiting-timeout-card").style.display = "block";
+        }, 120000);
       }
     });
 
-    // ── Poll until partner is ready ───────────────────────────
     function startReadyPoll() {
       if (readyPollTimer) return;
       readyPollTimer = setInterval(async () => {
         try {
-          const data = await fetch(`/api/matches/${matchId}/ready-status`).then(r => r.json());
+          const data = await fetch(`/api/matches/${matchId}/ready-status`).then((r) => r.json());
           if (data.bothReady) {
             clearInterval(readyPollTimer);
-            sessionStorage.setItem('navigatingToSession', '1');
+            sessionStorage.setItem("navigatingToSession", "1");
             window.location.href = `/video/${matchId}`;
           }
-          // Show contextual message
           if (data.you && !data.partner) {
-            waitingSub.textContent = 'Your partner is still getting ready. Hang tight.';
+            waitingSub.textContent = "Your partner is still getting ready. Stay here as long as you want.";
           }
-          // Handle match ended while waiting
-          const info = await fetch(`/api/matches/${matchId}`).then(r => r.json());
-          if (info.status === 'ended') {
+          const info = await fetch(`/api/matches/${matchId}`).then((r) => r.json());
+          if (info.status === "ended") {
             clearInterval(readyPollTimer);
-            window.location.href = '/dashboard';
+            window.location.href = "/dashboard";
           }
-        } catch { /* ignore */ }
+        } catch {
+          // ignore polling failures
+        }
       }, 2000);
     }
 
-    // ── Shared cleanup helper ─────────────────────────────────
     function clearWaitingTimers() {
       clearInterval(readyPollTimer);
       clearTimeout(waitingTimeoutTimer);
@@ -286,51 +287,48 @@
       waitingTimeoutTimer = null;
     }
 
-    // ── Go back — returns to camera-check state ───────────────
-    document.getElementById('btn-go-back').addEventListener('click', async () => {
+    document.getElementById("btn-go-back").addEventListener("click", async () => {
       clearWaitingTimers();
-      document.getElementById('waiting-timeout-card').style.display = 'none';
-      await fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE' }).catch(() => {});
-      stateCheck.style.display   = 'flex';
-      stateWaiting.style.display = 'none';
-      joinBtn.disabled    = false;
-      joinBtn.textContent = 'Join Session';
-      // Stop old tracks before re-acquiring
-      localStream?.getTracks().forEach(t => t.stop());
+      document.getElementById("waiting-timeout-card").style.display = "none";
+      await fetch(`/api/matches/${matchId}/ready`, { method: "DELETE" }).catch(() => {});
+      stateCheck.style.display = "flex";
+      stateWaiting.style.display = "none";
+      joinBtn.disabled = false;
+      joinBtn.textContent = "Join session";
+      localStream?.getTracks().forEach((track) => track.stop());
       localStream = null;
+
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         previewVideo.srcObject = localStream;
-        placeholder.style.display = 'none';
-      } catch { /* keep existing error state */ }
+        placeholder.style.display = "none";
+      } catch {
+        // keep error state if permissions are not available
+      }
     });
 
-    // ── Leave waiting room — ends the match and goes home ─────
     async function leaveWaitingRoom() {
       clearWaitingTimers();
-      localStream?.getTracks().forEach(t => t.stop());
-      await fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE' }).catch(() => {});
-      await fetch(`/api/matches/${matchId}/leave`, { method: 'POST' }).catch(() => {});
-      window.location.href = '/dashboard';
+      localStream?.getTracks().forEach((track) => track.stop());
+      await fetch(`/api/matches/${matchId}/ready`, { method: "DELETE" }).catch(() => {});
+      await fetch(`/api/matches/${matchId}/leave`, { method: "POST" }).catch(() => {});
+      window.location.href = "/dashboard";
     }
 
-    document.getElementById('btn-leave-waiting').addEventListener('click', leaveWaitingRoom);
+    document.getElementById("btn-leave-waiting").addEventListener("click", leaveWaitingRoom);
 
-    // ── Cancel from prejoin camera-check state ────────────────
-    document.getElementById('btn-cancel').addEventListener('click', async () => {
+    document.getElementById("btn-cancel").addEventListener("click", async () => {
       clearWaitingTimers();
-      localStream?.getTracks().forEach(t => t.stop());
-      await fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE' }).catch(() => {});
-      await fetch(`/api/matches/${matchId}/leave`, { method: 'POST' }).catch(() => {});
-      // navigation handled by the <a href="/dashboard"> on the element
+      localStream?.getTracks().forEach((track) => track.stop());
+      await fetch(`/api/matches/${matchId}/ready`, { method: "DELETE" }).catch(() => {});
+      await fetch(`/api/matches/${matchId}/leave`, { method: "POST" }).catch(() => {});
     });
 
-    window.addEventListener('pagehide', () => {
-      localStream?.getTracks().forEach(t => t.stop());
-      // Don't leave if we're navigating forward into the video session
-      if (!sessionStorage.getItem('navigatingToSession')) {
-        fetch(`/api/matches/${matchId}/ready`, { method: 'DELETE', keepalive: true }).catch(() => {});
-        fetch(`/api/matches/${matchId}/leave`,  { method: 'POST',   keepalive: true }).catch(() => {});
+    window.addEventListener("pagehide", () => {
+      localStream?.getTracks().forEach((track) => track.stop());
+      if (!sessionStorage.getItem("navigatingToSession")) {
+        fetch(`/api/matches/${matchId}/ready`, { method: "DELETE", keepalive: true }).catch(() => {});
+        fetch(`/api/matches/${matchId}/leave`, { method: "POST", keepalive: true }).catch(() => {});
       }
     });
   </script>

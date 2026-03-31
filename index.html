@@ -3,366 +3,309 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supportly - A Gentle Place to Be Heard</title>
-  <link rel="icon" type="image/png" href="/Logo.2.png?v=2" />
+  <title>Supportly — You're Never Alone</title>
+  <link rel="icon" type="image/png" href="/Logo.2.png?v=2">
   <link rel="stylesheet" href="css/style.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="page-glow glow-one"></div>
-  <div class="page-glow glow-two"></div>
 
+  <!-- ═══ NAV ═══ -->
   <header class="nav-wrap">
-    <nav class="site-nav">
-      <a href="/" class="brand">
+    <nav>
+      <a href="#" class="brand">
         <img src="Logo.2.png" alt="Supportly" class="nav-logo" />
-        <div class="brand-copy">
-          <span class="brand-name">Supportly</span>
-          <span class="brand-tag">Private care, one conversation at a time</span>
-        </div>
       </a>
-
-      <div class="nav-links">
-        <a href="#how">How it works</a>
-        <a href="#roles">Roles</a>
-        <a href="#safety">Safety</a>
-      </div>
-
       <div class="nav-actions">
         <button class="btn-ghost" onclick="openModal('login')">Log In</button>
-        <button class="btn-primary" onclick="openModal('signup')">Create Account</button>
+        <button class="btn-primary" onclick="openModal('signup')">Get Started</button>
       </div>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy reveal">
-        <span class="eyebrow">A quieter, safer place to land</span>
-        <h1>Support should feel warm, private, and steady from the first second.</h1>
-        <p class="hero-text">
-          Supportly is built for one simple thing: helping people meet in a calm space where
-          sharing feels easier and listening feels more human. No public profiles. No noisy feed.
-          Just one person who wants to talk and one person who is ready to be there.
-        </p>
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
 
-        <div class="hero-cta">
-          <button class="btn-primary large" onclick="openModal('signup')">Start in a private room</button>
-          <a href="#how" class="btn-ghost large">See how it works</a>
-        </div>
-
-        <div class="trust-row">
-          <div class="trust-pill">
-            <i data-lucide="shield-check"></i>
-            Private account and protected sessions
-          </div>
-          <div class="trust-pill">
-            <i data-lucide="message-circle"></i>
-            Text or video, whichever feels gentler
-          </div>
-          <div class="trust-pill">
-            <i data-lucide="door-open"></i>
-            Leave any session whenever you need to
-          </div>
-        </div>
+    <div class="hero-content">
+      <span class="badge">
+        <i data-lucide="shield" class="badge-icon"></i>
+        Anonymous &amp; Safe
+      </span>
+      <h1>A place to speak.<br /><span class="h1-grad">A place to listen.</span></h1>
+      <p>Supportly connects you anonymously with someone who genuinely cares — whether you need to share what's weighing on you, or you're ready to be there for someone else.</p>
+      <div class="hero-cta">
+        <button class="btn-primary large" onclick="openModal('signup')">Start Chatting Free</button>
+        <a href="#how" class="btn-ghost large">How It Works</a>
       </div>
+      <p class="trust-signal">
+        <i data-lucide="clock" class="trust-icon"></i>
+        Takes less than 10 seconds to get matched · No signup required to start
+      </p>
+    </div>
 
-      <div class="hero-panel reveal" style="--delay:0.08s">
-        <div class="hero-panel-head">
-          <div>
-            <span class="panel-label">What this space should feel like</span>
-            <h2>Your calm room is ready</h2>
-          </div>
-          <span class="panel-badge">Anonymous by design</span>
+    <div class="hero-visual">
+      <div class="app-mockup">
+        <div class="mockup-header">
+          <img src="Logo.2.png" alt="Supportly" class="mockup-logo" />
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
         </div>
-
-        <div class="hero-room">
-          <div class="room-thread">
-            <div class="room-bubble room-bubble-soft">
-              I did not need the perfect words. I just needed a place that did not feel harsh.
-            </div>
-            <div class="room-bubble room-bubble-strong">
-              You can take your time here. Nothing about this has to be rushed.
-            </div>
-            <div class="room-bubble room-bubble-soft">
-              That alone makes it easier to breathe.
-            </div>
+        <div class="mockup-match">
+          <div class="match-icon-wrap">
+            <i data-lucide="headphones"></i>
           </div>
-
-          <div class="room-sidebar">
-            <div class="sidebar-card">
-              <span class="sidebar-kicker">Before you start</span>
-              <strong>No public identity</strong>
-              <p>You choose a private username. The rest of the experience stays focused on care.</p>
-            </div>
-            <div class="sidebar-card">
-              <span class="sidebar-kicker">During every session</span>
-              <strong>You stay in control</strong>
-              <p>Switch formats, report concerns, or leave at any time without needing to explain.</p>
-            </div>
-            <div class="sidebar-card sidebar-card-accent">
-              <span class="sidebar-kicker">The tone</span>
-              <strong>Gentle, not clinical</strong>
-              <p>This is meant to feel like a soft place to arrive, not a stressful interface.</p>
-            </div>
+          <div class="match-info">
+            <p class="match-name">Anonymous Listener</p>
+            <p class="match-status">✦ Ready to support you</p>
           </div>
+          <button class="match-connect-btn">Connect</button>
+        </div>
+        <div class="mockup-chat">
+          <div class="chat-row right">
+            <div class="chat-bubble right">I've been feeling really anxious lately...</div>
+          </div>
+          <div class="chat-row left">
+            <div class="chat-bubble left">I hear you. Take your time 💜</div>
+          </div>
+          <div class="chat-row right">
+            <div class="chat-bubble right">Just knowing someone is listening helps so much.</div>
+          </div>
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mockup-input">
+          <span class="input-placeholder">Share what's on your mind...</span>
+          <button class="send-btn"><i data-lucide="send"></i></button>
         </div>
       </div>
-    </section>
-
-    <section class="values-section">
-      <div class="section-header reveal">
-        <span class="section-label">How it should feel</span>
-        <h2>Designed around the emotions people actually need</h2>
-        <p>Every page should make the experience feel calmer, more grounded, and more trustworthy.</p>
+      <div class="floating-badge badge-left">
+        <i data-lucide="shield-check"></i>
+        <span>100% Anonymous</span>
       </div>
-
-      <div class="values-grid">
-        <article class="value-card reveal" style="--delay:0s">
-          <div class="value-icon">
-            <i data-lucide="home"></i>
-          </div>
-          <h3>Comfort first</h3>
-          <p>Soft light, gentle pacing, and warm surfaces help the product feel welcoming instead of cold.</p>
-        </article>
-
-        <article class="value-card reveal" style="--delay:0.08s">
-          <div class="value-icon">
-            <i data-lucide="lock"></i>
-          </div>
-          <h3>Safety you can sense</h3>
-          <p>Clear boundaries, private sessions, and visible controls make trust feel obvious at a glance.</p>
-        </article>
-
-        <article class="value-card reveal" style="--delay:0.16s">
-          <div class="value-icon">
-            <i data-lucide="heart"></i>
-          </div>
-          <h3>Human warmth</h3>
-          <p>The interface should feel like a steady companion, not a machine asking people to perform.</p>
-        </article>
+      <div class="floating-badge badge-right">
+        <i data-lucide="zap"></i>
+        <span>Matched in seconds</span>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="process-section" id="how">
-      <div class="section-header reveal">
-        <span class="section-label">How it works</span>
-        <h2>Simple enough to feel immediate, thoughtful enough to feel safe</h2>
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="how" id="how">
+    <div class="section-header reveal">
+      <h2>How Supportly Works</h2>
+      <p>Three simple steps to a meaningful conversation.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" style="--delay:0s">
+        <div class="icon-wrap"><i data-lucide="shield"></i></div>
+        <h3>Stay Anonymous</h3>
+        <p>No names, no photos. Choose a mood and a role — nothing more required to get started.</p>
       </div>
-
-      <div class="process-grid">
-        <article class="process-card reveal" style="--delay:0s">
-          <span class="process-number">01</span>
-          <h3>Create a private account</h3>
-          <p>Pick a private username, choose how you want to show up, and step into a space that stays focused on care.</p>
-        </article>
-
-        <article class="process-card reveal" style="--delay:0.08s">
-          <span class="process-number">02</span>
-          <h3>Choose your role and format</h3>
-          <p>Share what is on your mind, or be the person who listens. Choose text, video, or whatever feels safest in the moment.</p>
-        </article>
-
-        <article class="process-card reveal" style="--delay:0.16s">
-          <span class="process-number">03</span>
-          <h3>Enter one calm conversation</h3>
-          <p>No public wall, no audience, no pressure. Just one private room where the conversation can breathe.</p>
-        </article>
+      <div class="step-arrow reveal" style="--delay:0.1s">
+        <i data-lucide="chevron-right"></i>
       </div>
-    </section>
-
-    <section class="roles-section" id="roles">
-      <div class="section-header reveal">
-        <span class="section-label">Two ways to arrive</span>
-        <h2>Supportly works whether you need care or want to offer it</h2>
+      <div class="step reveal" style="--delay:0.2s">
+        <div class="icon-wrap"><i data-lucide="users"></i></div>
+        <h3>Get Matched</h3>
+        <p>Our system pairs a <strong>Sharer</strong> with a <strong>Listener</strong> who is genuinely ready to help.</p>
       </div>
-
-      <div class="roles-grid">
-        <article class="role-card role-card-sharer reveal" style="--delay:0s">
-          <div class="role-card-top">
-            <div class="role-mark">Sharer</div>
-            <div class="role-icon-wrap">
-              <i data-lucide="message-circle"></i>
-            </div>
-          </div>
-          <h3>I need to talk</h3>
-          <p>For moments when your mind feels loud and you need a space that feels softer than the day has been.</p>
-          <ul class="role-card-list">
-            <li>Speak at your own pace, without pressure to explain everything perfectly.</li>
-            <li>Choose text for ease, or video when you want a more present connection.</li>
-            <li>Keep the experience private, centered, and easy to leave whenever needed.</li>
-          </ul>
-        </article>
-
-        <article class="role-card role-card-listener reveal" style="--delay:0.1s">
-          <div class="role-card-top">
-            <div class="role-mark">Listener</div>
-            <div class="role-icon-wrap">
-              <i data-lucide="headphones"></i>
-            </div>
-          </div>
-          <h3>I want to listen</h3>
-          <p>For the days when you can offer steadiness, presence, and a few quiet minutes that might really matter.</p>
-          <ul class="role-card-list">
-            <li>Show up as a real person, not a performer or a fixer.</li>
-            <li>Offer empathy, perspective, or simply a calm place for someone to exhale.</li>
-            <li>Help shape a community that feels kinder every time someone enters it.</li>
-          </ul>
-        </article>
+      <div class="step-arrow reveal" style="--delay:0.3s">
+        <i data-lucide="chevron-right"></i>
       </div>
-    </section>
-
-    <section class="assurance-section" id="safety">
-      <div class="section-header reveal">
-        <span class="section-label">Built for trust</span>
-        <h2>The details that help people feel safe enough to stay</h2>
+      <div class="step reveal" style="--delay:0.4s">
+        <div class="icon-wrap"><i data-lucide="message-circle"></i></div>
+        <h3>Talk It Out</h3>
+        <p>Chat via text or hop on a video call — whichever feels most comfortable for you.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="assurance-grid">
-        <article class="assurance-card reveal" style="--delay:0s">
-          <h3>Private by design</h3>
-          <p>Sessions happen one-on-one, with no public discovery layer and no pressure to reveal personal details.</p>
-        </article>
-        <article class="assurance-card reveal" style="--delay:0.06s">
-          <h3>Clear exits and controls</h3>
-          <p>Users can leave, report, or switch modes without hunting around or feeling trapped inside the flow.</p>
-        </article>
-        <article class="assurance-card reveal" style="--delay:0.12s">
-          <h3>Gentle pacing</h3>
-          <p>The interface slows things down just enough to feel reassuring, without getting in the way of connection.</p>
-        </article>
-        <article class="assurance-card reveal" style="--delay:0.18s">
-          <h3>Warm visual language</h3>
-          <p>Earthy color, quiet depth, and softer contrast help the product feel grounded instead of synthetic.</p>
-        </article>
+  <!-- ═══ ROLES ═══ -->
+  <section class="roles">
+    <div class="role-card sharer reveal" style="--delay:0s">
+      <div class="role-icon-wrap sharer-icon"><i data-lucide="message-circle"></i></div>
+      <h3>The Sharer</h3>
+      <p>Something weighing on you? You'll be matched with a caring listener who is fully present — no judgement, no rush.</p>
+      <ul>
+        <li><i data-lucide="check-circle"></i> Share at your own pace</li>
+        <li><i data-lucide="check-circle"></i> Text or video, your choice</li>
+        <li><i data-lucide="check-circle"></i> Fully anonymous, always</li>
+      </ul>
+    </div>
+    <div class="role-card listener reveal" style="--delay:0.15s">
+      <div class="role-icon-wrap listener-icon"><i data-lucide="headphones"></i></div>
+      <h3>The Listener</h3>
+      <p>Feel like making a difference today? Lend an ear, offer perspective, and remind someone they're not alone.</p>
+      <ul>
+        <li><i data-lucide="check-circle"></i> Be there when it matters</li>
+        <li><i data-lucide="check-circle"></i> Give advice or just listen</li>
+        <li><i data-lucide="check-circle"></i> Earn kindness badges</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ SOCIAL PROOF ═══ -->
+  <section class="social-proof">
+    <div class="stats">
+      <div class="stat reveal" style="--delay:0s">
+        <span class="stat-num counter" data-target="12400" data-suffix="+">0</span>
+        <span class="stat-label">Conversations this week</span>
       </div>
-    </section>
-
-    <section class="story-section">
-      <div class="section-header reveal">
-        <span class="section-label">What a better tone makes possible</span>
-        <h2>When the environment softens, people open up more honestly</h2>
+      <div class="stat-divider"></div>
+      <div class="stat reveal" style="--delay:0.1s">
+        <span class="stat-num counter" data-target="94" data-suffix="%">0</span>
+        <span class="stat-label">Feel better after talking</span>
       </div>
-
-      <div class="story-grid">
-        <article class="story-card reveal" style="--delay:0s">
-          <p>
-            "I wanted something that felt private and calm right away. The moment the page opened, it felt less like an app and more like somewhere I could breathe."
-          </p>
-          <span>Anonymous sharer</span>
-        </article>
-        <article class="story-card reveal" style="--delay:0.08s">
-          <p>
-            "The softer tone matters more than people think. It makes listening feel more intentional, and it makes it easier to stay present."
-          </p>
-          <span>Anonymous listener</span>
-        </article>
-        <article class="story-card reveal" style="--delay:0.16s">
-          <p>
-            "Being anonymous helped, but the real difference was that the whole space felt gentle. That made me trust it."
-          </p>
-          <span>Private beta feedback</span>
-        </article>
+      <div class="stat-divider"></div>
+      <div class="stat reveal" style="--delay:0.2s">
+        <span class="stat-num counter" data-prefix="&lt;&nbsp;" data-target="2" data-suffix=" min">0</span>
+        <span class="stat-label">Average match time</span>
       </div>
-    </section>
-
-    <section class="cta-section">
-      <div class="cta-panel reveal">
-        <span class="section-label">Ready when you are</span>
-        <h2>Come in gently. Stay only as long as you need.</h2>
-        <p>
-          Create a private account, choose how you want to show up today, and step into a calmer way to connect.
-        </p>
-        <div class="hero-cta">
-          <button class="btn-white large" onclick="openModal('signup')">Create your account</button>
-          <button class="btn-ghost light large" onclick="openModal('login')">I already have one</button>
+    </div>
+    <div class="testimonials">
+      <div class="testimonial reveal" style="--delay:0s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"I didn't expect to feel so heard by a complete stranger. Just having someone listen made everything feel lighter."</p>
+        <div class="t-author">
+          <div class="t-avatar">M</div>
+          <span>M.K. &mdash; Anonymous User</span>
         </div>
       </div>
-    </section>
-  </main>
+      <div class="testimonial reveal" style="--delay:0.15s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"Being a listener reminded me I'm not alone either. It's therapeutic for both sides of the conversation."</p>
+        <div class="t-author">
+          <div class="t-avatar">J</div>
+          <span>J.R. &mdash; Listener</span>
+        </div>
+      </div>
+      <div class="testimonial reveal" style="--delay:0.3s">
+        <div class="quote-mark"><i data-lucide="quote"></i></div>
+        <p>"I was skeptical at first, but the anonymity made it so much easier to open up. No judgment, just real support."</p>
+        <div class="t-author">
+          <div class="t-avatar">A</div>
+          <span>A.T. &mdash; Anonymous User</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <footer class="site-footer">
-    <div class="footer-shell">
+  <!-- ═══ FEATURES ═══ -->
+  <section class="features" id="features">
+    <div class="section-header reveal">
+      <h2>Everything You Need to Connect</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature reveal" style="--delay:0s">
+        <div class="icon-wrap"><i data-lucide="eye-off"></i></div>
+        <h4>100% Anonymous</h4>
+        <p>Your identity stays private. Connect freely without fear or judgement.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.07s">
+        <div class="icon-wrap"><i data-lucide="video"></i></div>
+        <h4>Video or Text</h4>
+        <p>Choose a format that suits the moment — always your call.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.14s">
+        <div class="icon-wrap"><i data-lucide="zap"></i></div>
+        <h4>Instant Matching</h4>
+        <p>No waiting lists. Get connected to the right person in seconds.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.21s">
+        <div class="icon-wrap"><i data-lucide="shield-check"></i></div>
+        <h4>Safe Space</h4>
+        <p>Built-in reporting and moderation keep the community respectful.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.28s">
+        <div class="icon-wrap"><i data-lucide="moon"></i></div>
+        <h4>Always Available</h4>
+        <p>Day or night — someone on Supportly is always ready to listen.</p>
+      </div>
+      <div class="feature reveal" style="--delay:0.35s">
+        <div class="icon-wrap"><i data-lucide="leaf"></i></div>
+        <h4>No Pressure</h4>
+        <p>End any session at any time. You're always in control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BANNER ═══ -->
+  <section class="cta-banner">
+    <div class="cta-content reveal">
+      <h2>You don't have to go through it alone.</h2>
+      <p>Join Supportly and find your match in seconds.</p>
+      <button class="btn-white large" onclick="openModal('signup')">Create a Free Account</button>
+      <p class="cta-trust">
+        <i data-lucide="lock" class="trust-icon-sm"></i> No credit card required &nbsp;&middot;&nbsp;
+        <i data-lucide="user-x" class="trust-icon-sm"></i> Stay fully anonymous
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
       <div class="footer-brand">
         <img src="Logo.2.png" alt="Supportly" class="footer-logo" />
-        <div>
-          <strong>Supportly</strong>
-          <p>A gentler digital room for people who need to be heard.</p>
-        </div>
+        <p class="footer-tagline">A safe space for every voice.<br />Made with 💜 for everyone who needs to be heard.</p>
       </div>
-
-      <div class="footer-links">
-        <a href="#how">How it works</a>
-        <a href="#roles">Roles</a>
-        <a href="#safety">Safety</a>
-        <a href="#" onclick="openModal('signup'); return false;">Get started</a>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Supportly. All rights reserved.</p>
+        <nav class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact</a>
+          <a href="#">Safety</a>
+        </nav>
       </div>
     </div>
   </footer>
 
+  <!-- ═══ LOGIN MODAL ═══ -->
   <div class="modal-overlay" id="modal-login" onclick="closeModal('login')">
     <div class="modal" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal('login')" aria-label="Close login modal">&times;</button>
+      <button class="modal-close" onclick="closeModal('login')">✕</button>
       <img src="Logo.2.png" alt="Supportly" class="modal-logo" />
       <h2>Welcome back</h2>
-      <p class="modal-sub">Return to your private Supportly space.</p>
+      <p class="modal-sub">Log in to your Supportly account</p>
       <form id="form-login">
         <div class="form-error hidden" id="error-login"></div>
-        <input type="email" id="login-email" name="email" placeholder="Email address" autocomplete="email" required />
+        <input type="email"    id="login-email"    name="email"    placeholder="Email address"  autocomplete="email" required />
         <div class="password-field">
-          <input
-            type="password"
-            id="login-password"
-            name="password"
-            placeholder="Password"
-            autocomplete="current-password"
-            required
-          />
-          <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+          <input type="password" id="login-password" name="password" placeholder="Password" autocomplete="current-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
         </div>
         <button class="btn-primary full" type="submit" id="btn-login-submit">Log In</button>
       </form>
-      <p class="modal-switch">Do not have an account yet? <a href="#" onclick="switchModal('login','signup')">Create one</a></p>
+      <p class="modal-switch">Don't have an account? <a href="#" onclick="switchModal('login','signup')">Sign up</a></p>
     </div>
   </div>
 
+  <!-- ═══ SIGNUP MODAL ═══ -->
   <div class="modal-overlay" id="modal-signup" onclick="closeModal('signup')">
     <div class="modal" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal('signup')" aria-label="Close signup modal">&times;</button>
+      <button class="modal-close" onclick="closeModal('signup')">✕</button>
       <img src="Logo.2.png" alt="Supportly" class="modal-logo" />
-      <h2>Create your private account</h2>
-      <p class="modal-sub">Set up your space in under a minute and start when you feel ready.</p>
+      <h2>Join Supportly</h2>
+      <p class="modal-sub">Create your free anonymous account</p>
       <form id="form-signup">
         <div class="form-error hidden" id="error-signup"></div>
-        <input type="email" id="signup-email" name="email" placeholder="Email address" autocomplete="email" required />
+        <input type="email"    id="signup-email"    name="email"            placeholder="Email address"    autocomplete="email" required />
         <div class="password-field">
-          <input
-            type="password"
-            id="signup-password"
-            name="password"
-            placeholder="Password - 8+ characters, 1 uppercase, 1 number"
-            autocomplete="new-password"
-            required
-          />
-          <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+          <input type="password" id="signup-password" name="password" placeholder="Password — 8+ chars, 1 uppercase, 1 number" autocomplete="new-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
         </div>
         <div class="password-field">
-          <input
-            type="password"
-            id="signup-confirm"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            autocomplete="new-password"
-            required
-          />
-          <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+          <input type="password" id="signup-confirm"  name="confirmPassword"  placeholder="Confirm password" autocomplete="new-password" required />
+          <button type="button" class="toggle-password" aria-label="Show password">👁</button>
         </div>
         <button class="btn-primary full" type="submit" id="btn-signup-submit">Create Account</button>
       </form>
-      <p class="modal-trust">Private username, protected sessions, and control over how you connect.</p>
+      <p class="modal-trust"><i data-lucide="lock" class="trust-icon-sm"></i> No credit card · Always anonymous</p>
       <p class="modal-switch">Already have an account? <a href="#" onclick="switchModal('signup','login')">Log in</a></p>
     </div>
   </div>

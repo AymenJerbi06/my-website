@@ -1,568 +1,390 @@
-/* =====================================================
-   SUPPORTLY — VIDEO STYLESHEET
-   Dark but warm — like a candlelit evening room
-   ===================================================== */
-
-html, body { height: 100%; }
+/* ════════════════════════════════════════
+   SUPPORTLY — Video Pages
+════════════════════════════════════════ */
 
 .video-body {
+  background: #0d0a1a;
   min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  background:
-    radial-gradient(ellipse at 12% 6%,  rgba(190, 145, 95, 0.14), transparent 28%),
-    radial-gradient(ellipse at 88% 20%, rgba(90, 128, 100, 0.16), transparent 28%),
-    linear-gradient(178deg, #12170f 0%, #151e16 38%, #161a15 100%);
-  color: #ece8de;
-}
-.video-session-body { overflow: hidden; }
-
-/* Warm ambient glows — amber warmth, sage coolness */
-.video-ambient {
-  position: fixed;
-  width: 30rem; height: 30rem;
-  border-radius: 50%;
-  filter: blur(108px);
-  opacity: 0.24;
-  pointer-events: none;
-  z-index: 0;
-}
-.ambient-one {
-  left: -9rem; top: 9rem;
-  background: radial-gradient(circle, rgba(195, 148, 88, 0.44), transparent 65%);
-}
-.ambient-two {
-  right: -10rem; bottom: 8rem;
-  background: radial-gradient(circle, rgba(90, 128, 100, 0.38), transparent 65%);
-}
-
-.session-header, .prejoin-stage, .video-shell { position: relative; z-index: 1; }
-
-/* ─── Session header ──────────────────────────────────── */
-.session-header {
-  width: min(1180px, calc(100vw - 32px));
-  margin: 0 auto;
-  padding: 18px 0 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-.session-header .brand { color: #ece8de; }
-.session-header .brand-name { color: #f0ece2; }
-.session-header .brand-tag { color: rgba(236, 232, 222, 0.55); }
-
-.session-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(255, 244, 225, 0.07);
-  border: 1px solid rgba(255, 244, 225, 0.13);
-  color: #f0d8a8;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.session-header-actions { display: flex; align-items: center; gap: 12px; }
-.video-header-btn {
-  color: #ece8de;
-  background: rgba(255, 244, 225, 0.07);
-  border-color: rgba(255, 244, 225, 0.13);
-}
-.video-header-btn:hover { background: rgba(255, 244, 225, 0.12); }
-
-/* ─── Containers ─────────────────────────────────────── */
-.prejoin-stage, .video-shell {
-  width: min(1180px, calc(100vw - 32px));
-  margin: 0 auto 28px;
-}
-.prejoin-wrap {
-  width: 100%;
-  min-height: calc(100vh - 116px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ─── Shared card border/shadow ──────────────────────── */
-.prejoin-card, .waiting-card, .connecting-card, .report-dialog {
-  border: 1px solid rgba(255, 244, 225, 0.09);
-  box-shadow: 0 28px 88px rgba(5, 8, 6, 0.32);
-}
-
-/* ─── Pre-join card ───────────────────────────────────── */
-.prejoin-card {
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 22px;
-  padding: 28px;
-  border-radius: 38px;
-  background: linear-gradient(168deg, rgba(20, 27, 22, 0.94), rgba(16, 22, 18, 0.96));
-}
-
-.prejoin-copy, .prejoin-panel, .waiting-card, .connecting-card, .report-dialog {
-  border-radius: 30px;
-}
-.prejoin-copy { padding: 12px 8px; }
-
-.prejoin-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: #f0d8a8;
-}
-
-.prejoin-copy h1, .waiting-card h1,
-.ended-overlay h2, .report-dialog h2, .connecting-card h2 {
-  margin-top: 14px;
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, 4vw, 3.5rem);
-  line-height: 1.06;
-  letter-spacing: -0.03em;
-}
-.prejoin-copy p, .waiting-card p,
-.permission-copy, .report-dialog .modal-sub {
-  margin-top: 14px;
-  color: rgba(236, 232, 222, 0.70);
-  line-height: 1.78;
-}
-
-/* Pre-join points */
-.prejoin-points { margin-top: 26px; display: grid; gap: 14px; }
-.prejoin-point {
-  padding: 16px 20px;
-  border-radius: 20px;
-  background: rgba(255, 244, 225, 0.05);
-  border: 1px solid rgba(255, 244, 225, 0.08);
-  transition: background 0.18s ease;
-}
-.prejoin-point:hover { background: rgba(255, 244, 225, 0.08); }
-.prejoin-point strong { display: block; color: #ece8de; margin-bottom: 4px; font-weight: 700; }
-.prejoin-point span { color: rgba(236, 232, 222, 0.68); font-size: 0.93rem; }
-
-/* ─── Pre-join panel (preview) ────────────────────────── */
-.prejoin-panel {
-  padding: 20px;
-  background: rgba(255, 244, 225, 0.04);
-  border: 1px solid rgba(255, 244, 225, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
 }
 
+/* Prejoin pages still scroll normally if content is tall */
+.prejoin-body { overflow-y: auto; }
+
+/* ════════════════
+   PRE-JOIN LOBBY
+════════════════ */
+.prejoin-body {
+  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(124,58,237,0.18) 0%, transparent 60%),
+              linear-gradient(160deg, #0f0a24 0%, #150a35 100%);
+}
+
+.prejoin-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px 40px;
+  gap: 24px;
+}
+
+.prejoin-header { text-align: center; }
+.prejoin-header h1 {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.prejoin-header p { font-size: 14px; color: rgba(255,255,255,0.45); }
+
+/* Camera card */
 .preview-card {
   position: relative;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #0e1210;
-  min-height: 300px;
-  box-shadow: inset 0 0 0 1px rgba(255, 244, 225, 0.06);
-}
-.preview-card video, #remote-video, .local-pip video {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-#remote-video { background: #0e1210; }
-
-.preview-placeholder, .camera-off-overlay, .pip-cam-off {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  color: rgba(236, 232, 222, 0.74);
-  background: linear-gradient(180deg, rgba(16, 22, 18, 0.60), rgba(16, 22, 18, 0.90));
-  text-align: center;
-  padding: 20px;
-}
-
-.preview-icon, .permission-icon, .ended-icon {
-  min-width: 60px; height: 60px;
-  padding: 0 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: min(400px, 88vw);
+  aspect-ratio: 4/3;
+  background: #1a1128;
   border-radius: 20px;
-  background: rgba(240, 216, 168, 0.10);
-  color: #f0d8a8;
-  font-weight: 800;
-  font-size: 0.86rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  overflow: hidden;
+  border: 1.5px solid rgba(167,139,250,0.18);
+  box-shadow: 0 0 80px rgba(124,58,237,0.12), 0 8px 32px rgba(0,0,0,0.4);
 }
-
-.preview-overlay-label, .pip-label, .remote-label {
-  position: absolute;
-  left: 14px; bottom: 14px;
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(16, 22, 18, 0.64);
-  border: 1px solid rgba(255, 244, 225, 0.08);
-  color: #ece8de;
-  font-size: 0.80rem;
-  font-weight: 700;
+.preview-card video      { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
+.preview-placeholder {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:10px;
+  color:rgba(255,255,255,0.35); font-size:13px; font-weight:600;
+}
+.preview-icon { font-size: 42px; }
+.camera-off-overlay {
+  position:absolute; inset:0; background:#1a1128;
+  display:flex; align-items:center; justify-content:center; font-size:44px;
+}
+.preview-overlay-label {
+  position:absolute; bottom:12px; left:12px;
+  background:rgba(0,0,0,0.5); backdrop-filter:blur(8px);
+  border-radius:7px; padding:4px 10px;
+  font-size:11px; font-weight:700; color:rgba(255,255,255,0.85);
 }
 
 /* Device status */
-.device-status { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.device-status { display:flex; gap:20px; }
 .device-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(255, 244, 225, 0.05);
-  border: 1px solid rgba(255, 244, 225, 0.08);
-  color: rgba(236, 232, 222, 0.68);
-  font-weight: 700;
-  font-size: 0.92rem;
+  display:flex; align-items:center; gap:7px;
+  font-size:13px; font-weight:600;
+  color:rgba(255,255,255,0.4);
 }
-.device-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: rgba(236, 232, 222, 0.26);
-}
-.device-item.ok .device-dot {
-  background: #88b48e;
-  box-shadow: 0 0 0 5px rgba(136, 180, 142, 0.14);
-}
-.device-item.error .device-dot {
-  background: #c47a6a;
-  box-shadow: 0 0 0 5px rgba(196, 122, 106, 0.14);
-}
+.device-item.ok    { color:#4ade80; }
+.device-item.error { color:#f87171; }
+.device-dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
 
-/* ─── Controls ────────────────────────────────────────── */
-.preview-controls, .waiting-actions, .connect-actions, .report-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+/* Toggle controls */
+.preview-controls { display:flex; gap:12px; }
 .ctrl-btn {
-  width: 56px; height: 56px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 244, 225, 0.10);
-  background: rgba(255, 244, 225, 0.07);
-  color: #ece8de;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.18s ease, transform 0.18s ease;
+  width:50px; height:50px; border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.06);
+  color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.15s, border-color 0.15s;
+  flex-shrink:0;
 }
-.ctrl-btn svg { width: 22px; height: 22px; }
-.ctrl-btn:hover { transform: translateY(-1px); background: rgba(255, 244, 225, 0.12); }
-.ctrl-btn.off { color: #f0d8a8; border-color: rgba(240, 216, 168, 0.18); }
+.ctrl-btn:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(167,139,250,0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(124,58,237,0.22);
+}
+.ctrl-btn.off   { background:rgba(239,68,68,0.18); border-color:rgba(239,68,68,0.4); color:#f87171; }
+.ctrl-btn svg   { width:20px; height:20px; }
 
-/* ─── Buttons ─────────────────────────────────────────── */
-.join-btn, .small-action, .danger-ghost { border-radius: 999px; font-weight: 800; }
+/* Join button */
 .join-btn {
-  border: none;
-  padding: 14px 24px;
-  background: linear-gradient(140deg, #486553, #618468);
-  color: #fef8f0;
-  box-shadow: 0 14px 32px rgba(72, 101, 83, 0.26);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  background: linear-gradient(135deg, #7C3AED, #9333ea);
+  color:#fff; border:none; border-radius:50px;
+  padding:13px 38px; font-size:16px; font-weight:800;
+  font-family:'Nunito',sans-serif; cursor:pointer;
+  box-shadow:0 4px 20px rgba(124,58,237,0.35);
+  transition:opacity 0.15s, transform 0.1s;
 }
-.join-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(72, 101, 83, 0.32); }
-.join-btn.subtle {
-  background: rgba(255, 244, 225, 0.08);
-  border: 1px solid rgba(255, 244, 225, 0.13);
-  box-shadow: none;
-}
-.join-btn:disabled { opacity: 0.40; cursor: not-allowed; box-shadow: none; }
-.small-action { padding: 10px 18px; }
-.danger-ghost {
-  border: 1px solid rgba(196, 122, 106, 0.24);
-  background: rgba(196, 122, 106, 0.08);
-  color: #f0c4b8;
-  padding: 12px 20px;
-}
+.join-btn:hover           { opacity:0.9; transform:scale(1.02); }
+.join-btn:disabled        { opacity:0.38; cursor:not-allowed; transform:none; }
 
-/* ─── Error / permission / timeout cards ─────────────── */
-.permission-card, .waiting-timeout-card, .connect-failed-card {
-  display: none;
-  padding: 16px 18px;
-  border-radius: 20px;
-  background: rgba(196, 122, 106, 0.08);
-  border: 1px solid rgba(196, 122, 106, 0.16);
-}
-.permission-title { margin-top: 10px; font-weight: 800; color: #f5ddd6; }
-.prejoin-note { color: rgba(236, 232, 222, 0.55); font-size: 0.90rem; }
-
-/* ─── Waiting room ────────────────────────────────────── */
-.waiting-wrap { align-items: center; }
-.waiting-card {
-  width: min(520px, 100%);
-  padding: 36px;
-  text-align: center;
-  background: linear-gradient(168deg, rgba(20, 27, 22, 0.94), rgba(16, 22, 18, 0.96));
-}
+/* Waiting spinner (reused on waiting state) */
 .video-waiting-spinner {
-  width: 66px; height: 66px;
-  margin: 0 auto 22px;
-  border-radius: 50%;
-  border: 3px solid rgba(240, 216, 168, 0.12);
-  border-top-color: #f0d8a8;
-  animation: spin 1s linear infinite;
+  width:44px; height:44px;
+  border:3px solid rgba(167,139,250,0.2);
+  border-top-color:#a855f7; border-radius:50%;
+  animation:spin 0.9s linear infinite;
 }
-.waiting-timeout-card {
-  margin-top: 20px;
-  color: rgba(236, 232, 222, 0.76);
-  line-height: 1.72;
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ════════════════
+   LIVE SESSION
+════════════════ */
+
+/*
+ * 3-row grid: header | video-stage | controls
+ * This guarantees the controls are always visible regardless of stream
+ * aspect ratio or viewport height (fixes landscape on iPhone).
+ */
+.video-session-body {
+  background: #000;
+  /* 100dvh tracks Safari's collapsing bars; 100vh is the fallback */
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* iPhone notch / home-bar safe areas */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* ─── Video stage ─────────────────────────────────────── */
-.video-shell {
-  min-height: 0;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 14px;
+/* Compact header — row 1 */
+.video-session-body .dash-header {
+  padding: 8px 16px;
+  min-height: 56px;
 }
+.video-session-body .nav-logo { height: 36px; }
+
+/* Video stage — row 2: 1fr with min-height:0 so it never pushes row 3 off screen */
 .video-stage {
   min-height: 0;
   position: relative;
-  overflow: hidden;
-  border-radius: 36px;
-  background: #0e1210;
-  border: 1px solid rgba(255, 244, 225, 0.07);
-  box-shadow: 0 28px 80px rgba(5, 8, 6, 0.30);
-}
-
-/* ─── Connecting overlay ──────────────────────────────── */
-.connecting-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  background:
-    radial-gradient(ellipse at top, rgba(190, 145, 88, 0.10), transparent 36%),
-    linear-gradient(180deg, rgba(18, 25, 20, 0.88), rgba(14, 20, 16, 0.96));
-}
-.connecting-card {
-  width: min(440px, 100%);
-  padding: 34px;
-  text-align: center;
-  background: rgba(255, 244, 225, 0.05);
+  overflow: hidden;
+  background: #0d0a1a;
 }
 
-/* Connecting rings */
+/* Remote video — contain keeps the full person visible on any aspect ratio */
+#remote-video { width: 100%; height: 100%; object-fit: contain; }
+
+/* Connecting / waiting overlay */
+.connecting-overlay {
+  position:absolute; inset:0; z-index:10;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:22px;
+  background:linear-gradient(160deg,#0f0a24,#150a35);
+}
+.connecting-overlay.hidden { display:none; }
+.connecting-overlay p { font-size:15px; color:rgba(255,255,255,0.55); font-weight:600; }
+
+/* Animated connecting rings */
 .conn-rings {
   position: relative;
-  width: 118px; height: 118px;
-  margin: 0 auto 20px;
+  width: 120px; height: 120px;
+  display: flex; align-items: center; justify-content: center;
 }
 .conn-ring {
   position: absolute;
-  inset: 0;
   border-radius: 50%;
-  border: 1px solid rgba(240, 216, 168, 0.17);
-  animation: pulse-ring 2.8s ease-out infinite;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  animation: conn-ring-pulse 2.8s cubic-bezier(0.4,0,0.6,1) infinite;
 }
-.conn-ring-2 { animation-delay: 0.38s; }
-.conn-ring-3 { animation-delay: 0.76s; }
+.conn-ring-1 {
+  width: 68px; height: 68px;
+  border: 1.5px solid rgba(167,139,250,0.6);
+  animation-delay: 0s;
+}
+.conn-ring-2 {
+  width: 92px; height: 92px;
+  border: 1px solid rgba(236,72,153,0.38);
+  animation-delay: 0.7s;
+}
+.conn-ring-3 {
+  width: 120px; height: 120px;
+  border: 1px solid rgba(91,200,245,0.22);
+  animation-delay: 1.4s;
+}
+@keyframes conn-ring-pulse {
+  0%   { transform: translate(-50%,-50%) scale(0.5);  opacity: 1; }
+  70%  { transform: translate(-50%,-50%) scale(1);    opacity: 0; }
+  100% { transform: translate(-50%,-50%) scale(1);    opacity: 0; }
+}
 .conn-core {
-  position: absolute;
-  inset: 26px;
+  position: relative; z-index: 2;
+  width: 54px; height: 54px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(140deg, rgba(72, 101, 83, 0.96), rgba(97, 132, 104, 0.96));
-  color: #fef8f0;
-  box-shadow: 0 16px 36px rgba(72, 101, 83, 0.28);
+  background: rgba(167,139,250,0.1);
+  border: 1.5px solid rgba(167,139,250,0.3);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  animation: conn-core-breathe 3s ease-in-out infinite;
 }
-.connecting-card p { color: rgba(236, 232, 222, 0.76); margin-top: 8px; }
-
-.connect-failed-card { margin-top: 18px; text-align: left; }
-.connect-failed-card p span {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.88rem;
-  color: rgba(236, 232, 222, 0.58);
+@keyframes conn-core-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167,139,250,0); }
+  50%       { box-shadow: 0 0 20px 8px rgba(167,139,250,0.18); }
 }
-.leave-link { margin-top: 16px; }
 
-/* ─── Partner label, local pip ────────────────────────── */
-.remote-label { top: 18px; left: 18px; bottom: auto; }
+/* Remote label chip */
+.remote-label {
+  position:absolute; top:12px; left:12px; z-index:15;
+  background:rgba(0,0,0,0.45); backdrop-filter:blur(10px);
+  border-radius:8px; padding:4px 11px;
+  font-size:12px; font-weight:700; color:rgba(255,255,255,0.8);
+}
+
+/* ── Local PiP ─────────────────────────────────────────────
+   Desktop default: bottom-right floating tile               */
 .local-pip {
   position: absolute;
-  right: 18px; bottom: 18px;
-  width: 176px;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: 22px;
-  border: 1px solid rgba(255, 244, 225, 0.09);
-  background: #111714;
-  box-shadow: 0 16px 40px rgba(5, 8, 6, 0.36);
-  z-index: 16;
+  bottom: 82px; right: 16px;
+  z-index: 15;
+  width: 150px; aspect-ratio: 4/3;
+  border-radius: 12px; overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.18);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+  background: #111;
 }
-.local-pip video { transform: scaleX(-1); }
-.pip-cam-off { font-weight: 700; font-size: 0.90rem; }
-.pip-label { bottom: 12px; left: 12px; }
+.local-pip video { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); }
 
-/* ─── Session ended overlay ───────────────────────────── */
+.pip-cam-off {
+  position:absolute; inset:0; background:#1a1128;
+  display:flex; align-items:center; justify-content:center; font-size:28px;
+}
+.pip-label {
+  position:absolute; bottom:5px; left:7px;
+  font-size:10px; font-weight:700; color:rgba(255,255,255,0.75);
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Session ended overlay */
 .ended-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-  padding: 32px;
-  text-align: center;
-  background: rgba(14, 18, 16, 0.95);
+  position:absolute; inset:0; z-index:30;
+  display:none; flex-direction:column;
+  align-items:center; justify-content:center; gap:16px;
+  background:rgba(13,10,26,0.92); text-align:center;
+  padding:40px 24px;
 }
-.ended-overlay.visible { display: flex; }
-.ended-overlay p { max-width: 36ch; color: rgba(236, 232, 222, 0.70); line-height: 1.72; }
-.ended-overlay a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 13px 22px;
-  border-radius: 999px;
-  background: linear-gradient(140deg, #486553, #618468);
-  color: #fef8f0;
-  font-weight: 800;
-  box-shadow: 0 10px 28px rgba(72, 101, 83, 0.28);
+.ended-overlay.visible { display:flex; }
+.ended-overlay h2 { font-size:22px; font-weight:800; color:#fff; }
+.ended-overlay p  { font-size:14px; color:rgba(255,255,255,0.5); }
+.ended-overlay a  {
+  margin-top:8px; display:inline-block;
+  background:linear-gradient(135deg,#7C3AED,#9333ea);
+  color:#fff; text-decoration:none;
+  border-radius:50px; padding:11px 30px;
+  font-weight:800; font-size:14px;
 }
 
-/* ─── Video controls bar ──────────────────────────────── */
+/* ── Bottom controls dock — row 3 (always visible) ───────── */
 .video-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 8px 0 calc(18px + env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 10px 0 calc(14px + env(safe-area-inset-bottom));
+  background: rgba(15,10,30,0.72);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-top: 1px solid rgba(167,139,250,0.18);
+  box-shadow: 0 -8px 32px rgba(124,58,237,0.12), inset 0 1px 0 rgba(167,139,250,0.08);
+  position: relative; z-index: 25;
 }
+
 .ctrl-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: rgba(236, 232, 222, 0.68);
-  font-size: 0.83rem;
-  font-weight: 700;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  font-size:10px; font-weight:700; color:rgba(255,255,255,0.35);
 }
-.ctrl-label .ctrl-btn { width: 62px; height: 62px; }
+.ctrl-label .ctrl-btn { width:52px; height:52px; }
+
 .end-call-btn {
-  background: linear-gradient(140deg, #a84e3c, #c46255);
-  border-color: transparent;
-  color: #fff4ec;
-  box-shadow: 0 10px 26px rgba(168, 78, 60, 0.28);
+  background:rgba(220,38,38,0.9) !important;
+  border-color:transparent !important;
+  color:#fff !important;
+  width:56px !important; height:56px !important;
 }
-.end-call-btn:hover { background: linear-gradient(140deg, #ba5844, #d0705e); }
+.end-call-btn:hover { background:#b91c1c !important; }
 
-/* ─── Report modal ────────────────────────────────────── */
-.report-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(5, 8, 6, 0.50);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.report-dialog {
-  width: min(460px, 100%);
-  padding: 32px;
-  background: linear-gradient(168deg, rgba(20, 27, 22, 0.98), rgba(16, 22, 18, 0.99));
-}
-.report-dialog h2 {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
-  letter-spacing: -0.03em;
-  color: #ece8de;
-}
+/* ══════════════════════════════════════
+   PHONE PORTRAIT  (≤ 768 px, upright)
+══════════════════════════════════════ */
+@media (max-width: 768px) and (orientation: portrait) {
+  .video-session-body .dash-header { padding: 6px 12px; min-height: 52px; }
+  .video-session-body .nav-logo    { height: 28px; }
 
-.report-options { display: grid; gap: 10px; margin-top: 20px; }
-.rrd {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 244, 225, 0.08);
-  background: rgba(255, 244, 225, 0.05);
-  color: rgba(236, 232, 222, 0.76);
-  cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
-}
-.rrd.selected {
-  border-color: rgba(240, 216, 168, 0.18);
-  background: rgba(240, 216, 168, 0.08);
-  color: #ece8de;
-}
-.rrd input[type="radio"] { accent-color: #f0d8a8; }
-.report-dialog textarea {
-  width: 100%;
-  margin-top: 14px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 244, 225, 0.10);
-  background: rgba(255, 244, 225, 0.06);
-  color: #ece8de;
-  resize: none;
-  outline: none;
-}
-.report-end-check {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  color: rgba(236, 232, 222, 0.70);
-  font-size: 0.91rem;
-}
-
-/* ─── Animations ─────────────────────────────────────── */
-@keyframes pulse-ring {
-  0%   { transform: scale(0.80); opacity: 0.72; }
-  100% { transform: scale(1.16); opacity: 0; }
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ─── Responsive ─────────────────────────────────────── */
-@media (max-width: 980px) {
-  .session-header, .prejoin-stage, .video-shell { width: calc(100vw - 24px); }
-  .prejoin-card { grid-template-columns: 1fr; }
-}
-@media (max-width: 720px) {
-  .session-header { flex-wrap: wrap; justify-content: center; }
-  .session-header-actions { width: 100%; justify-content: space-between; }
-  .prejoin-card, .waiting-card, .connecting-card, .report-dialog { padding: 22px; }
-  .device-status, .preview-controls, .waiting-actions, .connect-actions, .report-actions {
-    flex-direction: column;
+  /* Small portrait tile tucked under the header, top-right */
+  .local-pip {
+    width: 88px; aspect-ratio: 3/4;
+    top: 58px; right: 10px; bottom: auto;
+    border-radius: 10px;
   }
-  .device-status { grid-template-columns: 1fr; }
-  .join-btn, .danger-ghost, .small-action { width: 100%; justify-content: center; }
-  .local-pip { width: 120px; border-radius: 18px; }
+
+  /* Tighter control dock */
+  .video-controls               { padding: 8px 0 12px; gap: 10px; }
+  .ctrl-label .ctrl-btn         { width: 46px; height: 46px; }
+  .end-call-btn                 { width: 50px !important; height: 50px !important; }
 }
-@media (max-height: 560px) and (orientation: landscape) {
-  .video-stage { height: calc(100dvh - 126px); }
-  #remote-video { object-fit: contain; background: #0e1210; }
-  .local-pip { top: 18px; bottom: auto; width: 110px; }
+
+/* ══════════════════════════════════════════════════
+   COMPACT LANDSCAPE — phone in landscape orientation
+   Trigger: short height (< 500px), not just width.
+   Controls are FIXED to bottom so they can never be
+   pushed off screen regardless of grid/flex behaviour.
+══════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Minimal header */
+  .video-session-body .dash-header { padding: 3px 10px; min-height: 38px; }
+  .video-session-body .nav-logo    { height: 20px; }
+  #session-badge   { font-size: 11px !important; padding: 3px 10px !important; }
+  #btn-report-hdr  { display: none !important; }
+
+  /* Remote label chip stays inside the video stage */
+  .remote-label { top: 6px; left: 8px; font-size: 11px; padding: 3px 9px; }
+
+  /* Self-view: small landscape tile just below the header */
+  .local-pip {
+    width: 90px; aspect-ratio: 4/3;
+    top: 44px; right: 8px; bottom: auto;
+    border-radius: 8px;
+  }
+
+  /*
+   * Give the video stage an explicit height so the remote video
+   * knows exactly how tall its box is and can contain correctly.
+   * Header ~38px + dock 54px = 92px chrome total.
+   */
+  .video-stage {
+    padding-bottom: 0;
+    height: calc(100dvh - 38px - 54px);
+    max-height: calc(100dvh - 38px - 54px);
+  }
+
+  /* Ensure remote video fills stage with contain (no cropping) */
+  #remote-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+
+  /* Controls dock: FIXED to bottom — immune to layout flow */
   .video-controls {
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    background: rgba(14, 18, 16, 0.92);
-    backdrop-filter: blur(18px);
-    padding-top: 10px;
     z-index: 40;
+    height: 54px;
+    padding: 4px 10px calc(4px + env(safe-area-inset-bottom));
+    gap: 10px;
+    background: rgba(13,10,26,0.97);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
   }
+
+  /* Icon-only: hide label text, keep buttons */
+  .ctrl-label             { display: none; }
+  /* Pull buttons out of hidden labels so they're direct children of the dock */
+}
+
+/* Buttons inside hidden labels need to be visible — restructure display */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Re-show the buttons even though their parent .ctrl-label is hidden */
+  .ctrl-label             { display: flex; flex-direction: column; align-items: center; gap: 0; font-size: 0; }
+  .ctrl-label .ctrl-btn   { width: 42px; height: 42px; }
+  .ctrl-btn svg           { width: 17px; height: 17px; }
+  .end-call-btn           { width: 44px !important; height: 44px !important; }
 }
